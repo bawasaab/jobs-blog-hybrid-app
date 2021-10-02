@@ -1,0 +1,7 @@
+{
+  "name": "jobs-blog-hybrid-app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

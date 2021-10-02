@@ -1,0 +1,6 @@
+{
+	"appId": "io.ionic.starter",
+	"appName": "jobs-blog-hybrid-app",
+	"webDir": "www",
+	"bundledWebRuntime": false
+}
