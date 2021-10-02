@@ -6,13 +6,61 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   public appPages = [
-    { title: 'Inbox', url: '/folder/Inbox', icon: 'mail' },
-    { title: 'Outbox', url: '/folder/Outbox', icon: 'paper-plane' },
-    { title: 'Favorites', url: '/folder/Favorites', icon: 'heart' },
-    { title: 'Archived', url: '/folder/Archived', icon: 'archive' },
-    { title: 'Trash', url: '/folder/Trash', icon: 'trash' },
-    { title: 'Spam', url: '/folder/Spam', icon: 'warning' },
+    {
+        title: 'Home',
+        url: '/home',
+        icon: 'home'
+    },
+    {
+        title: 'Latest Jobs',
+        url: '/latest-jobs',
+        icon: 'newspaper'
+    },
+    {
+        title: 'Jobs Closing Soon',
+        url: '/jobs-closing-soon',
+        icon: 'timer' 
+    },
+    {
+        title: 'Upcoming Jobs',
+        url: '/upcoming-jobs',
+        icon: 'calendar' 
+    },
+    {
+        title: 'About Us',
+        url: '/about-us',
+        icon: 'information-circle' 
+    },
+    {
+        title: 'Contact Us',
+        url: '/contact-us',
+        icon: 'mail' 
+    },
+    {
+        title: 'Disclaimer',
+        url: '/disclaimer',
+        icon: 'hand-right' 
+    },
+    {
+        title: 'Privacy Policy',
+        url: '/privacy-policy',
+        icon: 'document-text' 
+    },
+    {
+        title: 'importance-of-government-jobs-in-india',
+        url: '/importance-of-government-jobs-in-india',
+        icon: 'information-circle' 
+    },
+    {
+        title: 'How To Choose The Right Government Job For You In India',
+        url: '/how-to-choose-the-right-government-job-for-you-in-india',
+        icon: 'information-circle' 
+    },
+    {
+        title: 'Frequently Asked Questions',
+        url: '/faqs',
+        icon: 'chatbubbles' 
+    },
   ];
-  public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
   constructor() {}
 }
