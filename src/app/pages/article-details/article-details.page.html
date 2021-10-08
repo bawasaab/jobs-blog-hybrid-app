@@ -1,0 +1,36 @@
+<ion-header>
+	<!-- <ion-toolbar>
+		<ion-title>article-details</ion-title>
+	</ion-toolbar> -->
+
+	<ion-toolbar color="primary">
+		<ion-buttons slot="start">
+			<ion-back-button></ion-back-button>
+		</ion-buttons>
+		<ion-title>Article Details</ion-title>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen>
+	<ion-card>
+		<!-- <img src="./madison.jpg" /> -->
+		<ion-card-header color="dark">
+			<ion-card-subtitle class="">
+				<ion-icon name="person"></ion-icon>
+				{{ articles?.author_details.first_name }}
+
+				<ion-icon name="chatbubbles"></ion-icon>
+				{{ articles?.comments?.length }}
+
+				<ion-icon name="calendar"></ion-icon>
+				{{ articles?.createdAt | date:'fullDate' }}
+			</ion-card-subtitle>
+			<ion-card-title>
+				<h1>{{ articles?.title }}</h1>
+			</ion-card-title>
+		</ion-card-header>
+
+		<ion-card-content class="margin-top-10 text-justify" [innerHtml]="articles?.description">
+		</ion-card-content>
+	</ion-card>
+</ion-content>

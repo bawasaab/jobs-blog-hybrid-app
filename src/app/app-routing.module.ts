@@ -4,7 +4,8 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'folder/Inbox',
+    // redirectTo: 'folder/Inbox',
+    redirectTo: 'home',
     pathMatch: 'full'
   },
   {
@@ -54,7 +55,12 @@ const routes: Routes = [
   {
     path: 'how-to-choose-the-right-government-job-for-you-in-india',
     loadChildren: () => import('./pages/how-to-choose-the-right-government-job-for-you-in-india/how-to-choose-the-right-government-job-for-you-in-india.module').then( m => m.HowToChooseTheRightGovernmentJobForYouInIndiaPageModule)
+  },
+  {
+    path: 'article-details/:articleId',
+    loadChildren: () => import('./pages/article-details/article-details.module').then( m => m.ArticleDetailsPageModule)
   }
+
 ];
 
 @NgModule({
