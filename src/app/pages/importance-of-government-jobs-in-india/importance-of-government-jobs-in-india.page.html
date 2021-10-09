@@ -1,5 +1,5 @@
 <ion-header [translucent]="true">
-    <ion-toolbar>
+    <ion-toolbar color="dark">
       <ion-buttons slot="start">
         <ion-menu-button></ion-menu-button>
       </ion-buttons>
@@ -9,18 +9,18 @@
   
   <ion-content [fullscreen]="true">
     <ion-header collapse="condense">
-      <ion-toolbar>
+      <ion-toolbar color="dark">
         <ion-title size="large">{{ title }}</ion-title>
       </ion-toolbar>
     </ion-header>
 
     <ion-card>
-        <ion-card-header>
+        <ion-card-header color="dark">
           <!-- <ion-card-subtitle>Card Subtitle</ion-card-subtitle> -->
           <ion-card-title>{{ title }}</ion-card-title>
         </ion-card-header>
       
-        <ion-card-content class="text-justify">
+        <ion-card-content class="text-justify margin-top-10">
             <div id="container">
                 <p>
                     For the past decade, there has been a stark rise in the demand for Government Jobs. Indians have always preferred government jobs, but with the rise in the IT sectors, a huge portion of the youth choose Medical or Engineering as their career options. These fields of studies are professional in nature and come with merit-based immediate campusing and high-end placements with a pocket full of salary. Now the question comes despite having a satisfactory paycheck and a respectable position in the society, why is the youth shifting towards government jobs?
@@ -111,27 +111,36 @@
                             In short, attractive perks like Job Satisfaction, Authority, the sense of service towards one's country, Assured Promotions, High Respect, a sufficient salary package, and secured post- retirement life, are the main reasons why people opt for government jobs.
                         </p>
                         <hr>
-                        <br>
-                    </li>
-                </ol>
-                <h3 class="mb-2 text-center">Things you should know about Government Jobs</h3>
-                <ol>
-                    <li>
-                        Every Notification has a Lakhs of applicants
-                    </li>
-                    <li>
-                        You must be intelligent and sharp to Crack exam
-                    </li>
-                    <li>
-                        Dedicate all your time before going to prepare
-                    </li>
-                    <li>
-                        Communicate with others to share your knowledge
                     </li>
                 </ol>
             </div>
         </ion-card-content>
     </ion-card>
   
-    
+    <ion-card>
+        <ion-card-header color="dark">
+            <!-- <ion-card-subtitle>Card Subtitle</ion-card-subtitle> -->
+            <ion-card-title>Note</ion-card-title>
+          </ion-card-header>
+        <ion-card-content class="text-justify margin-top-10">
+            <h3>Things you should know about Government Jobs</h3>
+            <ol>
+                <li>
+                    Every Notification has a Lakhs of applicants
+                </li>
+
+                <li>
+                    You must be intelligent and sharp to Crack exam
+                </li>
+
+                <li>
+                    Dedicate all your time before going to prepare
+                </li>
+
+                <li>
+                    Communicate with others to share your knowledge
+                </li>
+            </ol>
+        </ion-card-content>
+    </ion-card>  
 </ion-content>  

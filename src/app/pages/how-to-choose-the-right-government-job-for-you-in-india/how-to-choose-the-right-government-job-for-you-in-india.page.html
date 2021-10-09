@@ -1,5 +1,5 @@
 <ion-header [translucent]="true">
-    <ion-toolbar>
+    <ion-toolbar color="dark">
       <ion-buttons slot="start">
         <ion-menu-button></ion-menu-button>
       </ion-buttons>
@@ -9,18 +9,18 @@
   
   <ion-content [fullscreen]="true">
     <ion-header collapse="condense">
-      <ion-toolbar>
+      <ion-toolbar color="dark">
         <ion-title size="large">{{ title }}</ion-title>
       </ion-toolbar>
     </ion-header>
   
     <ion-card>
-        <ion-card-header>
+        <ion-card-header color="dark">
           <!-- <ion-card-subtitle>Card Subtitle</ion-card-subtitle> -->
           <ion-card-title>{{ title }}</ion-card-title>
         </ion-card-header>
       
-        <ion-card-content class="text-justify">
+        <ion-card-content class="text-justify margin-top-10">
             <p>
                 Aiming for a government job is an excellent thing but where it sucks is which government job is right for you. For that, firstly, you have to get to know your worth. What talent you have, and in which field you can give your best. It's not all about money but about your passion, in what you are interested in. To get to know which government job is perfect for you, this article is the best.
             </p>                        
@@ -76,8 +76,17 @@
                 </li>
 
             </ol>
+            
+        </ion-card-content>
+    </ion-card>
 
-            <h3 class="text-center">Things you should know about Government Jobs</h3>
+    <ion-card>
+        <ion-card-header color="dark">
+            <!-- <ion-card-subtitle>Card Subtitle</ion-card-subtitle> -->
+            <ion-card-title>Note</ion-card-title>
+          </ion-card-header>
+        <ion-card-content class="text-justify margin-top-10">
+            <h3>Things you should know about Government Jobs</h3>
             <ol>
                 <li>
                     Every Notification has a Lakhs of applicants

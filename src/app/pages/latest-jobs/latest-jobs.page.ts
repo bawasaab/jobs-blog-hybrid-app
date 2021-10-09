@@ -11,6 +11,7 @@ import { LoadingController } from '@ionic/angular';
 export class LatestJobsPage implements OnInit {
 
 	title= 'Articles';
+	page= 'Latest Jobs';
 	articles;
 	ex;
 	isArticlesFound = false;
