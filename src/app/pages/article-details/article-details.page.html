@@ -16,21 +16,40 @@
 		<!-- <img src="./madison.jpg" /> -->
 		<ion-card-header color="dark">
 			<ion-card-subtitle class="">
-				<ion-icon name="person"></ion-icon>
-				{{ articles?.author_details.first_name }}
+				
+                <ion-grid>
+                    <ion-row>
 
-				<ion-icon name="chatbubbles"></ion-icon>
-				{{ articles?.comments?.length }}
+                      <ion-col size="3">
+                        <ion-icon name="person"></ion-icon>
+                        {{ articles?.author_details.first_name }}
+                      </ion-col>
 
-				<ion-icon name="calendar"></ion-icon>
-				{{ articles?.createdAt | date:'fullDate' }}
+                      <ion-col size="2">
+                        <ion-icon name="chatbubbles"></ion-icon>
+				        {{ articles?.comments?.length }}
+                      </ion-col>
+
+                      <ion-col size="2">
+                        <ion-icon name="eye"></ion-icon>
+				        3k
+                      </ion-col>
+
+                      <ion-col size="4">
+                        <ion-icon name="calendar"></ion-icon>
+				        {{ articles?.createdAt | date:'YYYY-mm-dd' }}
+                      </ion-col>
+
+                    </ion-row>
+                </ion-grid>
+                
 			</ion-card-subtitle>
 			<ion-card-title>
 				<h1>{{ articles?.title }}</h1>
 			</ion-card-title>
 		</ion-card-header>
 
-		<ion-card-content class="margin-top-10 text-justify" [innerHtml]="articles?.description">
+		<ion-card-content class="margin-top-10 text-justify" [innerHtml]="articles?.description | safeHtml">
 		</ion-card-content>
 	</ion-card>
 </ion-content>
