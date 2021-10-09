@@ -53,8 +53,37 @@
 	</ion-card>
 
     <ion-card class="text-center" *ngIf="articles?.externalLinks && articles?.externalLinks.length > 0">
-        <p *ngFor="let link of articles?.externalLinks;">
-            <ion-button color="medium" expand="full" shape="round" fill="outline" (click)="openExternal(link?.link);">{{ link?.text }}</ion-button>
-        </p>
+        <ion-card-content>
+
+            <p *ngFor="let link of articles?.externalLinks;">
+                <ion-button color="medium" expand="full" shape="round" fill="outline" (click)="openExternal(link?.link);">{{ link?.text }}</ion-button>
+            </p>
+        </ion-card-content>
     </ion-card>
+
+    <ion-card class="text-justify font-size-tags" *ngIf="articles?.tags && articles?.tags.length > 0">
+        <ion-card-content>
+            <ion-badge color="medium">Tags</ion-badge>
+            <ion-badge class="margin-left-10" *ngFor="let tag of articles?.tags;" color="dark">#{{ tag }}</ion-badge>
+        </ion-card-content>
+    </ion-card>
+
+    <ion-card *ngIf="articles?.comments && articles?.comments.length > 0">
+		<ion-card-header color="dark">
+			<!-- <ion-card-subtitle class=""></ion-card-subtitle> -->
+			<ion-card-title>
+				<h2>Comments({{ articles?.comments.length }})</h2>
+			</ion-card-title>
+		</ion-card-header>
+
+		<ion-card-content class="margin-top-10 text-justify" *ngFor="let comment of articles?.comments">
+            <p>
+                <b>
+                    <ion-icon name="person-circle-outline"></ion-icon>
+                    {{ comment?.name }}:
+                </b>
+                {{ comment?.comment }}
+            </p>
+		</ion-card-content>
+	</ion-card>
 </ion-content>
