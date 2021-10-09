@@ -13,24 +13,77 @@
 
 <ion-content fullscreen>
 	<ion-card>
-		<!-- <img src="./madison.jpg" /> -->
 		<ion-card-header color="dark">
 			<ion-card-subtitle class="">
-				<ion-icon name="person"></ion-icon>
-				{{ articles?.author_details.first_name }}
+				
+                <ion-grid>
+                    <ion-row>
 
-				<ion-icon name="chatbubbles"></ion-icon>
-				{{ articles?.comments?.length }}
+                      <ion-col size="3">
+                        <ion-icon name="person"></ion-icon>
+                        {{ articles?.author_details.first_name }}
+                      </ion-col>
 
-				<ion-icon name="calendar"></ion-icon>
-				{{ articles?.createdAt | date:'fullDate' }}
+                      <ion-col size="2">
+                        <ion-icon name="chatbubbles"></ion-icon>
+				        {{ articles?.comments?.length }}
+                      </ion-col>
+
+                      <ion-col size="2">
+                        <ion-icon name="eye"></ion-icon>
+				        3k
+                      </ion-col>
+
+                      <ion-col size="4">
+                        <ion-icon name="calendar"></ion-icon>
+				        {{ articles?.createdAt | date:'YYYY-mm-dd' }}
+                      </ion-col>
+
+                    </ion-row>
+                </ion-grid>
+                
 			</ion-card-subtitle>
 			<ion-card-title>
 				<h1>{{ articles?.title }}</h1>
 			</ion-card-title>
 		</ion-card-header>
 
-		<ion-card-content class="margin-top-10 text-justify" [innerHtml]="articles?.description">
+		<ion-card-content class="margin-top-10 text-justify" [innerHtml]="articles?.description | safeHtml">
+		</ion-card-content>
+	</ion-card>
+
+    <ion-card class="text-center" *ngIf="articles?.externalLinks && articles?.externalLinks.length > 0">
+        <ion-card-content>
+
+            <p *ngFor="let link of articles?.externalLinks;">
+                <ion-button color="medium" expand="full" shape="round" fill="outline" (click)="openExternal(link?.link);">{{ link?.text }}</ion-button>
+            </p>
+        </ion-card-content>
+    </ion-card>
+
+    <ion-card class="text-justify font-size-tags" *ngIf="articles?.tags && articles?.tags.length > 0">
+        <ion-card-content>
+            <ion-badge color="medium">Tags</ion-badge>
+            <ion-badge class="margin-left-10" *ngFor="let tag of articles?.tags;" color="dark">#{{ tag }}</ion-badge>
+        </ion-card-content>
+    </ion-card>
+
+    <ion-card *ngIf="articles?.comments && articles?.comments.length > 0">
+		<ion-card-header color="dark">
+			<!-- <ion-card-subtitle class=""></ion-card-subtitle> -->
+			<ion-card-title>
+				<h2>Comments({{ articles?.comments.length }})</h2>
+			</ion-card-title>
+		</ion-card-header>
+
+		<ion-card-content class="margin-top-10 text-justify" *ngFor="let comment of articles?.comments">
+            <p>
+                <b>
+                    <ion-icon name="person-circle-outline"></ion-icon>
+                    {{ comment?.name }}:
+                </b>
+                {{ comment?.comment }}
+            </p>
 		</ion-card-content>
 	</ion-card>
 </ion-content>
