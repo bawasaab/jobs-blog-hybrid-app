@@ -13,7 +13,6 @@
 
 <ion-content fullscreen>
 	<ion-card>
-		<!-- <img src="./madison.jpg" /> -->
 		<ion-card-header color="dark">
 			<ion-card-subtitle class="">
 				
@@ -52,4 +51,10 @@
 		<ion-card-content class="margin-top-10 text-justify" [innerHtml]="articles?.description | safeHtml">
 		</ion-card-content>
 	</ion-card>
+
+    <ion-card class="text-center" *ngIf="articles?.externalLinks && articles?.externalLinks.length > 0">
+        <p *ngFor="let link of articles?.externalLinks;">
+            <ion-button color="medium" expand="full" shape="round" fill="outline" (click)="openExternal(link?.link);">{{ link?.text }}</ion-button>
+        </p>
+    </ion-card>
 </ion-content>
