@@ -11,7 +11,7 @@ import { LoaderService } from 'src/app/custom/services/loader.service';
 })
 export class LatestJobsPage implements OnInit {
 
-	title= 'Articles';
+	title= 'Articles Listing';
 	page= 'Latest Jobs';
 	articles;
 	isArticlesFound = false;
