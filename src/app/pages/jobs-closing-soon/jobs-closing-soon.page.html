@@ -1,21 +1,47 @@
+<!-- OK starts -->
 <ion-header [translucent]="true">
     <ion-toolbar color="dark">
-      <ion-buttons slot="start">
-        <ion-menu-button></ion-menu-button>
-      </ion-buttons>
-      <ion-title>{{ title }}</ion-title>
+        <ion-buttons slot="start">
+            <ion-menu-button autoHide="true"></ion-menu-button>
+        </ion-buttons>
+        <ion-title>{{ title }}</ion-title>
     </ion-toolbar>
-  </ion-header>
-  
-  <ion-content [fullscreen]="true">
-    <ion-header collapse="condense">
-      <ion-toolbar color="dark">
-        <ion-title size="large">{{ title }}</ion-title>
-      </ion-toolbar>
-    </ion-header>
-  
-    <div id="container">
-      <strong class="capitalize">{{ title }}</strong>
-      <p>Explore <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-    </div>
-</ion-content>  
+</ion-header>
+<!-- OK ends -->
+
+<ion-content [fullscreen]="true">
+	<ion-header collapse="condense">
+		<ion-toolbar color="dark">
+			<ion-title size="large">
+                <h1>
+                    {{ title }}
+                </h1>
+            </ion-title>
+		</ion-toolbar>
+	</ion-header>
+
+	<div id="container" *ngIf="isArticlesFound; else noDataFound">
+		<h1 class="capitalize text-center">{{ page }}</h1>
+
+		<ion-card *ngFor="let article of articles; trackBy:identify">
+			<ion-item color="dark">
+				<ion-icon name="pin" slot="start"></ion-icon>
+				<ion-label class="text-center">
+					{{ article?.title }}
+				</ion-label>
+				<ion-button color="light" fill="outline" slot="end" (click)="goToDescription(article?._id)">View</ion-button>
+			</ion-item>
+
+			<ion-card-content class="text-justify">
+				{{ article?.short_description }}
+			</ion-card-content>
+		</ion-card>
+	</div>
+
+	<ng-template #noDataFound>
+		<div id="container">
+			<p *ngIf="!completed">Loading...</p>
+			<p *ngIf="completed">No Data Found.</p>
+		</div>
+	</ng-template>
+</ion-content>
