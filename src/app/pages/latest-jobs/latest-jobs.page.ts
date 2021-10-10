@@ -50,7 +50,6 @@ export class LatestJobsPage implements OnInit {
                 this.completed = true;
 				if( this.isArticlesFound ) {
                     await this.loaderService.close();
-
 				}
 			}
 		);
