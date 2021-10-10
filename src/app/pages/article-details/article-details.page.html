@@ -10,7 +10,8 @@
     </ion-toolbar>
 </ion-header>
 <!-- OK ends -->
-<ion-content [fullscreen]="true" @slideLeft>
+
+<ion-content [fullscreen]="true" *ngIf="isArticlesFound; else noDataFound" @slideLeft>
 	<ion-card>
 		<ion-card-header color="dark">
 
@@ -89,3 +90,10 @@
 		</ion-card-content>
 	</ion-card>
 </ion-content>
+
+<ng-template #noDataFound @slideLeft>
+    <ion-content>
+        <p *ngIf="!completed">Loading...</p>
+        <p *ngIf="completed">No Data Found.</p>
+    </ion-content>
+</ng-template>

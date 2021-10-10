@@ -8,7 +8,7 @@ export let slideLeft = trigger('slideLeft', [
         }),
         animate(
             // '450ms 400ms ease-out',
-            '200ms 250ms ease-out',
+            '450ms 400ms ease-out',
             style({
                 transform: 'translateX(0%)',
                 opacity: 1
