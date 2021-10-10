@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, of, throwError } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-
-// import { ConstantService } from './constant.service';
+import { ConstantService } from './constant.service';
 
 @Injectable({
 	providedIn: 'root'
@@ -12,11 +11,12 @@ export class ArticlesService {
 
 	constructor(
 		private httpClient: HttpClient,
+        private constantService: ConstantService,
 	) { }
 
 	getAllArticles() {
 
-        let url = `https://www.jobsnplacements.com/api/articles`;
+        let url = `${this.constantService.apiBaseUrl}/articles`;
         // search != undefined ? (url = `${url}?searchTxt=${search}`) : '';
         console.log('url', url);
         return this.httpClient
@@ -29,7 +29,7 @@ export class ArticlesService {
 
     getArticleById( id ) {
 
-        let url = `https://www.jobsnplacements.com/api/articles/${id}`;
+        let url = `${this.constantService.apiBaseUrl}/articles/${id}`;
         // search != undefined ? (url = `${url}?searchTxt=${search}`) : '';
         console.log('url', url);
         return this.httpClient

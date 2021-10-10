@@ -1,21 +1,136 @@
 <ion-header [translucent]="true">
-    <ion-toolbar color="dark">
-      <ion-buttons slot="start">
-        <ion-menu-button></ion-menu-button>
-      </ion-buttons>
-      <ion-title>{{ title }}</ion-title>
-    </ion-toolbar>
-  </ion-header>
-  
-  <ion-content [fullscreen]="true">
-    <ion-header collapse="condense">
-      <ion-toolbar color="dark">
-        <ion-title size="large">{{ title }}</ion-title>
-      </ion-toolbar>
-    </ion-header>
-  
-    <div id="container">
-      <strong class="capitalize">{{ title }}</strong>
-      <p>Explore <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-    </div>
-</ion-content>  
+	<ion-toolbar color="dark">
+		<ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+		<ion-title>{{ title }}</ion-title>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+	<ion-header collapse="condense">
+		<ion-toolbar color="dark">
+			<ion-title size="large">{{ title }}</ion-title>
+		</ion-toolbar>
+	</ion-header>
+
+	<div id="container">
+		<h1 class="capitalize text-center">Feel free to contact.</h1>
+
+        <form class="form" #usrFrm="ngForm" (ngSubmit)="handleSubmit( usrFrm );">
+
+            <ion-item>
+                <ion-label position="floating">First Name</ion-label>
+                <ion-input 
+                    required
+
+                    ngModel
+                    name="first_name"
+        
+                    #last_name="ngModel"
+        
+                    id="first_name"
+                    type="text" 
+
+                    minlength="3"
+                ></ion-input>
+                <div 
+                    *ngIf="usrFrm.submitted && usrFrm?.controls?.first_name?.invalid"
+                    class="alert alert-danger">
+
+                    <div
+                        *ngIf="usrFrm?.controls?.first_name?.errors?.required">
+                        <ion-text color="danger">
+                            Name is required
+                        </ion-text>
+                    </div>
+
+                    <div
+                        *ngIf="usrFrm?.controls?.first_name?.errors?.minlength">
+                        <ion-text color="danger">
+                            Characters required 
+                            {{ usrFrm?.controls?.first_name?.errors?.minlength?.requiredLength }} 
+                            in length but got 
+                            {{ usrFrm?.controls?.first_name?.errors?.minlength?.actualLength }} 
+                        </ion-text>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item>
+                <ion-label position="floating">Last Name</ion-label>
+                <ion-input 
+                    ngModel
+                    name="last_name"
+        
+                    #last_name="ngModel"
+        
+                    id="last_name"
+                    type="text" 
+                ></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label position="floating">Email</ion-label>
+                <ion-input 
+                    required
+                    email
+
+                    ngModel
+                    name="email"
+        
+                    #last_name="ngModel"
+        
+                    id="email"
+                ></ion-input>
+                <div 
+                    *ngIf="usrFrm.submitted && usrFrm?.controls?.email?.invalid"
+                    class="alert alert-danger">
+
+                    <div
+                        *ngIf="usrFrm?.controls?.email?.errors?.required">
+                        <ion-text color="danger">
+                            Email is required
+                        </ion-text>
+                    </div>
+
+                    <div
+                        *ngIf="usrFrm?.controls?.email?.errors?.email">
+                        <ion-text color="danger">
+                            Invalid email format
+                        </ion-text>
+                    </div>
+                </div>
+            </ion-item>
+            <ion-item>
+                <ion-label position="floating">Message</ion-label>
+                <ion-textarea
+                    required
+                    
+                    ngModel
+                    name="message"
+        
+                    #last_name="ngModel"
+        
+                    id="message"
+                ></ion-textarea>
+                <div 
+                    *ngIf="usrFrm.submitted && usrFrm?.controls?.message?.invalid"
+                    class="alert alert-danger">
+
+                    <div
+                        *ngIf="usrFrm?.controls?.message?.errors?.required">
+                        <ion-text color="danger">
+                            Message is required
+                        </ion-text>
+                    </div>
+                </div>
+            </ion-item>
+        
+            <p>{{ usrFrm.value | json }}</p>
+            
+            <ion-button type="submit" shape="round" expand="full">
+                <ion-icon name="paper-plane"></ion-icon>Send
+            </ion-button>
+        </form>
+		
+	</div>
+</ion-content>
