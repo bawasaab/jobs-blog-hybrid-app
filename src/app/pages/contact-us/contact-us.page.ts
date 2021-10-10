@@ -33,7 +33,7 @@ export class ContactUsPage implements OnInit {
         if( frmObj.invalid ) {
             console.log('invalid');
             return;
-          }
+        }
     
         let in_data = frmObj.value;
         console.log('in_data', in_data);
@@ -43,6 +43,8 @@ export class ContactUsPage implements OnInit {
             async (result) => {
                 console.log('result.msg', result.msg);
                 this.toasterService.presentToast(result.msg);
+                frmObj.submitted = false;
+                frmObj.reset();
             },
             async (ex) => {
                 console.log('ex', ex);
