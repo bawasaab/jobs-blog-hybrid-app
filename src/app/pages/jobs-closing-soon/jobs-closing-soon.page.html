@@ -20,7 +20,7 @@
 		</ion-toolbar>
 	</ion-header>
 
-	<div id="container" *ngIf="isArticlesFound; else noDataFound">
+	<div id="container" *ngIf="isArticlesFound; else noDataFound" @slideLeft>
 		<h1 class="capitalize text-center">{{ page }}</h1>
 
 		<ion-card *ngFor="let article of articles; trackBy:identify">
@@ -38,7 +38,7 @@
 		</ion-card>
 	</div>
 
-	<ng-template #noDataFound>
+	<ng-template #noDataFound @slideLeft>
 		<div id="container">
 			<p *ngIf="!completed">Loading...</p>
 			<p *ngIf="completed">No Data Found.</p>

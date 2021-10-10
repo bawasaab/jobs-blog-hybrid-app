@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { slideLeft } from 'src/app/custom/animations/slideLeft';
 import { LoaderService } from 'src/app/custom/services/loader.service';
 import { ToasterService } from 'src/app/custom/services/toaster.service';
 import { ArticlesService } from 'src/app/services/articles.service';
@@ -8,6 +9,9 @@ import { ArticlesService } from 'src/app/services/articles.service';
 	selector: 'app-jobs-closing-soon',
 	templateUrl: './jobs-closing-soon.page.html',
 	styleUrls: ['./jobs-closing-soon.page.scss'],
+    animations: [
+        slideLeft
+    ]
 })
 export class JobsClosingSoonPage implements OnInit {
 
