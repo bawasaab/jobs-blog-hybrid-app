@@ -29,6 +29,11 @@ export class ContactUsPage implements OnInit {
           console.log('not submitted');
           return;
         }
+
+        if( frmObj.invalid ) {
+            console.log('invalid');
+            return;
+          }
     
         let in_data = frmObj.value;
         console.log('in_data', in_data);
