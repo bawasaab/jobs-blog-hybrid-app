@@ -20,6 +20,7 @@ export class ArticleDetailsPage implements OnInit {
 	articleId;
 	isArticleIdSetFlag = false;
 	loading;
+    completed;
 
 	constructor(
 		protected articlesService: ArticlesService,
@@ -53,6 +54,7 @@ export class ArticleDetailsPage implements OnInit {
 				this.toasterService.presentToast(ex.message);
 			},
 			async () => {
+                this.completed = true;
 				if( this.isArticlesFound ) {
 					await this.loaderService.close();
 				}
