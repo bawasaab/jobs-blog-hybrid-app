@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LoadingController } from '@ionic/angular';
 import { ArticlesService } from "../../services/articles.service";
+import { ToasterService } from 'src/app/custom/services/toaster.service';
+import { LoaderService } from 'src/app/custom/services/loader.service';
 
 @Component({
 	selector: 'app-article-details',
@@ -20,7 +21,8 @@ export class ArticleDetailsPage implements OnInit {
 		protected articlesService: ArticlesService,
 		protected activatedRoute: ActivatedRoute, 
 		protected router: Router,
-		public loadingController: LoadingController
+		protected toasterService: ToasterService,
+        protected loaderService: LoaderService
 	) { }
 
 	ngOnInit() {
@@ -30,25 +32,12 @@ export class ArticleDetailsPage implements OnInit {
 			console.log('this.articleId', this.articleId);
 
 			this.isArticleIdSetFlag = this.articleId ? true : false;
-			this.isArticleIdSetFlag ? this.presentLoading() : '';
+			this.isArticleIdSetFlag ? this.getArticleById() : '';
 		});
-	}
-
-	async presentLoading() {
-		this.loading = await this.loadingController.create({
-		  cssClass: 'my-custom-class',
-		  message: 'Please wait...',
-		//   duration: 2000
-		});
-		// await loading.present();
-	
-		// const { role, data } = await this.loading.onDidDismiss();
-		// console.log('Loading dismissed!');
-		this.getArticleById();
 	}
 
 	async getArticleById() {
-		await this.loading.present();
+		await this.loaderService.open();
 		this.articlesService.getArticleById(this.articleId).subscribe(
 			async (result) => {
 				console.log('result', result);
@@ -56,13 +45,12 @@ export class ArticleDetailsPage implements OnInit {
 				this.isArticlesFound = true;
 			},
 			async (ex) => {
-				await this.loading.dismiss();
 				console.log('ex', ex);
-				alert(ex.toString());
+				this.toasterService.presentToast(ex.message);
 			},
 			async () => {
 				if( this.isArticlesFound ) {
-					await this.loading.dismiss();
+					await this.loaderService.close();
 				}
 			}
 		);

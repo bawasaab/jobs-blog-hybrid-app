@@ -42,7 +42,8 @@
 
 	<ng-template #noDataFound>
 		<div id="container">
-			<p>No Data Found.</p>
+			<p *ngIf="!completed">Loading...</p>
+			<p *ngIf="completed">No Data Found.</p>
 		</div>
 	</ng-template>
 </ion-content>

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ArticlesService } from "../../services/articles.service";
 import { ActivatedRoute, Router } from "@angular/router";
-import { LoadingController } from '@ionic/angular';
+import { ToasterService } from 'src/app/custom/services/toaster.service';
+import { LoaderService } from 'src/app/custom/services/loader.service';
 
 @Component({
 	selector: 'app-latest-jobs',
@@ -13,42 +14,27 @@ export class LatestJobsPage implements OnInit {
 	title= 'Articles';
 	page= 'Latest Jobs';
 	articles;
-	ex;
 	isArticlesFound = false;
 	loading;
+    completed = false;
 
 	constructor(
 		protected articlesService: ArticlesService,
 		protected activatedRoute: ActivatedRoute, 
 		protected router: Router,
-		public loadingController: LoadingController
-	) {
-	}
+        protected toasterService: ToasterService,
+        protected loaderService: LoaderService
+	) {}
 
 	ngOnInit() {
-		this.presentLoading();
-		// this.getAllArticles();
-	}
-
-	async presentLoading() {
-		this.loading = await this.loadingController.create({
-		  cssClass: 'my-custom-class',
-		  message: 'Please wait...',
-		//   duration: 2000
-		});
-		// await loading.present();
-	
-		// const { role, data } = await this.loading.onDidDismiss();
-		// console.log('Loading dismissed!');
 		this.getAllArticles();
 	}
 
 	async getAllArticles() {
 
-		await this.loading.present();
+		await this.loaderService.open();
 		this.articlesService.getAllArticles().subscribe(
 			async (result) => {
-				console.log('result', result);
 				this.articles = result?.data?.article;
 				
 				for (let index = 0; index < 11; index++) {
@@ -57,14 +43,14 @@ export class LatestJobsPage implements OnInit {
 				this.isArticlesFound = true;
 			},
 			async (ex) => {
-				await this.loading.dismiss();
 				console.log('ex', ex);
-				this.ex = ex;
-				alert(ex.toString());
+                this.toasterService.presentToast(ex.message);
 			},
 			async () => {
+                this.completed = true;
 				if( this.isArticlesFound ) {
-					await this.loading.dismiss();
+                    await this.loaderService.close();
+
 				}
 			}
 		);
