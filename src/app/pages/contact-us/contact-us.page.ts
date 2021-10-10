@@ -2,11 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { ContactUsService } from 'src/app/services/contact-us.service';
 import { LoaderService } from 'src/app/custom/services/loader.service';
 import { ToasterService } from 'src/app/custom/services/toaster.service';
+import { slideLeft } from 'src/app/custom/animations/slideLeft';
 
 @Component({
     selector: 'app-contact-us',
     templateUrl: './contact-us.page.html',
     styleUrls: ['./contact-us.page.scss'],
+    animations: [
+        slideLeft
+    ]
 })
 export class ContactUsPage implements OnInit {
 

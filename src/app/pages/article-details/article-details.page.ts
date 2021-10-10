@@ -3,11 +3,15 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ArticlesService } from "../../services/articles.service";
 import { ToasterService } from 'src/app/custom/services/toaster.service';
 import { LoaderService } from 'src/app/custom/services/loader.service';
+import { slideLeft } from 'src/app/custom/animations/slideLeft';
 
 @Component({
 	selector: 'app-article-details',
 	templateUrl: './article-details.page.html',
 	styleUrls: ['./article-details.page.scss'],
+    animations: [
+        slideLeft
+    ]
 })
 export class ArticleDetailsPage implements OnInit {
 

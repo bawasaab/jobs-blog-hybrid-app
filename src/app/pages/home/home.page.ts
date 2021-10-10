@@ -1,10 +1,14 @@
 import { Component, OnInit } from '@angular/core';
+import { slideLeft } from 'src/app/custom/animations/slideLeft';
 import { ArticlesService } from "../../services/articles.service";
 
 @Component({
 	selector: 'app-home',
 	templateUrl: './home.page.html',
 	styleUrls: ['./home.page.scss'],
+    animations: [
+        slideLeft
+    ]
 })
 export class HomePage implements OnInit {
 

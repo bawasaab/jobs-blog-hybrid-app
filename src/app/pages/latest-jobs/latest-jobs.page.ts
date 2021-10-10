@@ -3,11 +3,15 @@ import { ArticlesService } from "../../services/articles.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ToasterService } from 'src/app/custom/services/toaster.service';
 import { LoaderService } from 'src/app/custom/services/loader.service';
+import { slideLeft } from 'src/app/custom/animations/slideLeft';
 
 @Component({
 	selector: 'app-latest-jobs',
 	templateUrl: './latest-jobs.page.html',
 	styleUrls: ['./latest-jobs.page.scss'],
+    animations: [
+        slideLeft
+    ]
 })
 export class LatestJobsPage implements OnInit {
 
