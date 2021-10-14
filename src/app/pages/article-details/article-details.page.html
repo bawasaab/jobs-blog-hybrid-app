@@ -64,6 +64,50 @@
         </ion-card-content>
     </ion-card>
 
+    <!-- starts -->
+    <ion-card>
+        <form class="form" #usrFrm="ngForm" (ngSubmit)="SubscribeNewsletter( usrFrm );">
+            <ion-card-header color="dark">
+                <ion-card-subtitle><b>Subscribe to our news letter for instant updates.</b></ion-card-subtitle>
+                <!-- <input type="email" #email> -->
+            </ion-card-header>
+    
+            <ion-card-content class="margin-top-10 text-justify">
+                <ion-item>
+                    <ion-label position="floating">Enter Your Email To Get Instant Updates</ion-label>
+                    <ion-input
+                        required
+                        email
+
+                        ngModel
+                        name="email"
+
+                        #email="ngModel"
+
+                        id="email"
+                        type="email"
+                    ></ion-input>
+                </ion-item>
+                <ion-item *ngIf="isSubmitted && usrFrm.submitted && email?.required">
+                    <ion-text color="danger">
+                        Email is required
+                    </ion-text>
+                </ion-item>
+
+                <ion-item *ngIf="isSubmitted && usrFrm.submitted && email?.invalid">
+                    <ion-text color="danger">
+                        Invalid Email format
+                    </ion-text>
+                </ion-item>
+                <ion-button shape="round" expand="block" type="submit">
+                    Subscribe
+                    <ion-icon slot="start" name="paper-plane"></ion-icon>
+                </ion-button>
+            </ion-card-content>
+        </form>
+	</ion-card>
+    <!-- ends -->
+
     <ion-card class="text-justify font-size-tags" *ngIf="articles?.tags && articles?.tags.length > 0">
         <ion-card-content>
             <ion-badge color="medium">Tags</ion-badge>
