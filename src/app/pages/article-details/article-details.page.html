@@ -135,8 +135,8 @@
 	</ion-card>
 </ion-content>
 
-<ng-template #noDataFound @slideLeft>
-    <ion-content>
+<ng-template #noDataFound>
+    <ion-content @slideLeft>
         <p *ngIf="!completed">Loading...</p>
         <p *ngIf="completed">No Data Found.</p>
     </ion-content>
