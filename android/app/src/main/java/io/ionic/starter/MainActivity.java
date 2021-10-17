@@ -1,4 +1,4 @@
-package io.ionic.starter;
+package com.jobsnplacements.jobsnplacementsapp;
 
 import com.getcapacitor.BridgeActivity;
 
