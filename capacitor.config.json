@@ -1,6 +1,14 @@
 {
-	"appId": "io.ionic.starter",
+	"appId": "com.jobsnplacements.jobsnplacementsapp",
 	"appName": "jobs-blog-hybrid-app",
 	"webDir": "www",
-	"bundledWebRuntime": false
+	"bundledWebRuntime": false,
+	"plugins": {
+		"SplashScreen": {
+			"launchShowDuration": 0
+		},
+		"PushNotifications": {
+			"presentationOptions": ["badge", "sound", "alert", "vibration"]
+		}
+	}
 }
