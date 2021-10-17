@@ -29,12 +29,17 @@
 				<ion-label class="text-center">
 					{{ article?.title }}
 				</ion-label>
-				<ion-button color="light" fill="outline" slot="end" (click)="goToDescription(article?._id)">View</ion-button>
 			</ion-item>
 
 			<ion-card-content class="text-justify">
 				{{ article?.short_description }}
 			</ion-card-content>
+
+			<ion-footer>
+				<ion-card-content class="text-center">
+					<ion-button color="dark" shape="round" (click)="goToDescription(article?.slug)">View</ion-button>
+				</ion-card-content>
+			</ion-footer>
 		</ion-card>
 	</div>
 

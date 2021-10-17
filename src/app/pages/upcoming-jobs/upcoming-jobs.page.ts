@@ -64,8 +64,8 @@ export class UpcomingJobsPage implements OnInit {
 		return item._id;
 	}
 
-	goToDescription(articleId) {
-		console.log('articleId', articleId);
-		this.router.navigate([`article-details/${articleId}`]);
+	goToDescription(slug) {
+		console.log('articleId', slug);
+		this.router.navigate([`article-details/${slug}`]);
 	}
 }
