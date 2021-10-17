@@ -15,7 +15,7 @@
 	</ion-header>
 
     <ion-card>
-        <ion-card-header>
+        <ion-card-header color="dark">
           <!-- <ion-card-subtitle class="text-center"></ion-card-subtitle> -->
           <ion-card-title class="text-center"><h1>Feel free to contact.</h1></ion-card-title>
         </ion-card-header>
@@ -40,28 +40,29 @@
         
                             minlength="3"
                         ></ion-input>
-                        <div 
-                            *ngIf="usrFrm.submitted && usrFrm?.controls?.first_name?.invalid"
-                            class="alert alert-danger">
-        
-                            <div
-                                *ngIf="usrFrm?.controls?.first_name?.errors?.required">
-                                <ion-text color="danger">
-                                    Name is required
-                                </ion-text>
-                            </div>
-        
-                            <div
-                                *ngIf="usrFrm?.controls?.first_name?.errors?.minlength">
-                                <ion-text color="danger">
-                                    Characters required 
-                                    {{ usrFrm?.controls?.first_name?.errors?.minlength?.requiredLength }} 
-                                    in length but got 
-                                    {{ usrFrm?.controls?.first_name?.errors?.minlength?.actualLength }} 
-                                </ion-text>
-                            </div>
-                        </div>
                     </ion-item>
+                    <div
+                        *ngIf="usrFrm.submitted && usrFrm?.controls?.first_name?.invalid"
+                        class="alert alert-danger">
+    
+                        <div
+                            *ngIf="usrFrm?.controls?.first_name?.errors?.required">
+                            <ion-text color="danger">
+                                Name is required
+                            </ion-text>
+                        </div>
+    
+                        <div
+                            *ngIf="usrFrm?.controls?.first_name?.errors?.minlength">
+                            <ion-text color="danger">
+                                Characters required 
+                                {{ usrFrm?.controls?.first_name?.errors?.minlength?.requiredLength }} 
+                                in length but got 
+                                {{ usrFrm?.controls?.first_name?.errors?.minlength?.actualLength }} 
+                            </ion-text>
+                        </div>
+                    </div>
+
                     <ion-item>
                         <ion-label position="floating">Last Name</ion-label>
                         <ion-input 
@@ -74,6 +75,7 @@
                             type="text" 
                         ></ion-input>
                     </ion-item>
+
                     <ion-item>
                         <ion-label position="floating">Email</ion-label>
                         <ion-input 
@@ -87,25 +89,26 @@
                 
                             id="email"
                         ></ion-input>
-                        <div 
-                            *ngIf="usrFrm.submitted && usrFrm?.controls?.email?.invalid"
-                            class="alert alert-danger">
-        
-                            <div
-                                *ngIf="usrFrm?.controls?.email?.errors?.required">
-                                <ion-text color="danger">
-                                    Email is required
-                                </ion-text>
-                            </div>
-        
-                            <div
-                                *ngIf="usrFrm?.controls?.email?.errors?.email">
-                                <ion-text color="danger">
-                                    Invalid email format
-                                </ion-text>
-                            </div>
-                        </div>
                     </ion-item>
+                    <div 
+                        *ngIf="usrFrm.submitted && usrFrm?.controls?.email?.invalid"
+                        class="alert alert-danger">
+
+                        <div
+                            *ngIf="usrFrm?.controls?.email?.errors?.required">
+                            <ion-text color="danger">
+                                Email is required
+                            </ion-text>
+                        </div>
+
+                        <div
+                            *ngIf="usrFrm?.controls?.email?.errors?.email">
+                            <ion-text color="danger">
+                                Invalid email format
+                            </ion-text>
+                        </div>
+                    </div>
+
                     <ion-item>
                         <ion-label position="floating">Message</ion-label>
                         <ion-textarea
@@ -118,18 +121,19 @@
                 
                             id="message"
                         ></ion-textarea>
-                        <div 
-                            *ngIf="usrFrm.submitted && usrFrm?.controls?.message?.invalid"
-                            class="alert alert-danger">
-        
-                            <div
-                                *ngIf="usrFrm?.controls?.message?.errors?.required">
-                                <ion-text color="danger">
-                                    Message is required
-                                </ion-text>
-                            </div>
-                        </div>
                     </ion-item>
+
+                    <div 
+                        *ngIf="usrFrm.submitted && usrFrm?.controls?.message?.invalid"
+                        class="alert alert-danger">
+    
+                        <div
+                            *ngIf="usrFrm?.controls?.message?.errors?.required">
+                            <ion-text color="danger">
+                                Message is required
+                            </ion-text>
+                        </div>
+                    </div>
                 
                     <!-- <p>{{ usrFrm.value | json }}</p> -->
                     

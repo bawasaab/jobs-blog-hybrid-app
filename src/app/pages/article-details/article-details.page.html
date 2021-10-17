@@ -68,7 +68,7 @@
     <ion-card>
         <form class="form" #usrFrm="ngForm" (ngSubmit)="SubscribeNewsletter( usrFrm );">
             <ion-card-header color="dark">
-                <ion-card-subtitle><b>Subscribe to our news letter for instant updates.</b></ion-card-subtitle>
+                <ion-card-subtitle class="text-center"><b>Subscribe to our news letter for instant updates.</b></ion-card-subtitle>
                 <!-- <input type="email" #email> -->
             </ion-card-header>
     
@@ -88,17 +88,17 @@
                         type="email"
                     ></ion-input>
                 </ion-item>
-                <ion-item *ngIf="isSubmitted && usrFrm.submitted && email?.required">
+                <div *ngIf="isSubmitted && usrFrm.submitted && email?.required">
                     <ion-text color="danger">
                         Email is required
                     </ion-text>
-                </ion-item>
+                </div>
 
-                <ion-item *ngIf="isSubmitted && usrFrm.submitted && email?.invalid">
+                <div *ngIf="isSubmitted && usrFrm.submitted && email?.invalid">
                     <ion-text color="danger">
                         Invalid Email format
                     </ion-text>
-                </ion-item>
+                </div>
                 <ion-button shape="round" expand="block" type="submit">
                     Subscribe
                     <ion-icon slot="start" name="paper-plane"></ion-icon>
@@ -119,24 +119,27 @@
 		<ion-card-header color="dark">
 			<!-- <ion-card-subtitle class=""></ion-card-subtitle> -->
 			<ion-card-title>
-				<h2>Comments({{ articles?.comments.length }})</h2>
+				<h2 class="text-center">Comments({{ articles?.comments.length }})</h2>
 			</ion-card-title>
 		</ion-card-header>
 
-		<ion-card-content class="margin-top-10 text-justify" *ngFor="let comment of articles?.comments">
-            <p>
-                <b>
-                    <ion-icon name="person-circle-outline"></ion-icon>
-                    {{ comment?.name }}:
-                </b>
-                {{ comment?.comment }}
-            </p>
+		<ion-card-content class="" *ngFor="let comment of articles?.comments; let i = index;">
+            <ion-item class="text-justify" [ngClass]="i === 0 ? 'margin-top-10' : ''">
+                <p>
+                    <b>
+                        <ion-icon name="person-circle-outline"></ion-icon>
+                        {{ comment?.name }}:
+                    </b>
+                    {{ comment?.comment }}
+                </p>
+
+            </ion-item>
 		</ion-card-content>
 	</ion-card>
 </ion-content>
 
 <ng-template #noDataFound>
-    <ion-content @slideLeft>
+    <ion-content>
         <p *ngIf="!completed">Loading...</p>
         <p *ngIf="completed">No Data Found.</p>
     </ion-content>

@@ -37,7 +37,7 @@ export class JobsClosingSoonPage implements OnInit {
 	async getAllArticles() {
 
 		await this.loaderService.open();
-		this.articlesService.getAllArticles().subscribe(
+		this.articlesService.getAllJobsClosingSoon().subscribe(
 			async (result) => {
 				this.articles = result?.data?.article;
 				
@@ -64,8 +64,7 @@ export class JobsClosingSoonPage implements OnInit {
 		return item._id;
 	}
 
-	goToDescription(articleId) {
-		console.log('articleId', articleId);
-		this.router.navigate([`article-details/${articleId}`]);
+	goToDescription(slug) {
+		this.router.navigate([`article-details/${slug}`]);
 	}
 }

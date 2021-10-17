@@ -29,7 +29,7 @@
 				<ion-label class="text-center">
 					{{ article?.title }}
 				</ion-label>
-				<ion-button color="light" fill="outline" slot="end" (click)="goToDescription(article?._id)">View</ion-button>
+				<ion-button color="light" fill="outline" slot="end" (click)="goToDescription(article?.slug)">View</ion-button>
 			</ion-item>
 
 			<ion-card-content class="text-justify">

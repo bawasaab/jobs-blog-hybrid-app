@@ -37,7 +37,7 @@ export class UpcomingJobsPage implements OnInit {
 	async getAllArticles() {
 
 		await this.loaderService.open();
-		this.articlesService.getAllArticles().subscribe(
+		this.articlesService.getAllUpcomingJobs().subscribe(
 			async (result) => {
 				this.articles = result?.data?.article;
 				

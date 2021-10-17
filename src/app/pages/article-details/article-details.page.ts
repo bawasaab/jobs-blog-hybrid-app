@@ -47,7 +47,7 @@ export class ArticleDetailsPage implements OnInit {
 
 	async getArticleById() {
 		await this.loaderService.open();
-		this.articlesService.getArticleById(this.articleId).subscribe(
+		this.articlesService.getArticleBySlug(this.articleId).subscribe(
 			async (result) => {
 				console.log('result', result);
 				this.articles = result?.data?.article;
