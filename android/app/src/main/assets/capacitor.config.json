@@ -11,7 +11,8 @@
 			"presentationOptions": [
 				"badge",
 				"sound",
-				"alert"
+				"alert",
+				"vibration"
 			]
 		}
 	}

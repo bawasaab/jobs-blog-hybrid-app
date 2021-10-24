@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { slideLeft } from 'src/app/custom/animations/slideLeft';
 import { ArticlesService } from "../../services/articles.service";
 
+import { FcmService } from "../../services/fcm.service";
+
 @Component({
 	selector: 'app-home',
 	templateUrl: './home.page.html',
@@ -17,11 +19,13 @@ export class HomePage implements OnInit {
 	ex;
 
 	constructor(
-		protected articlesService: ArticlesService
+		protected articlesService: ArticlesService,
+		protected FcmService: FcmService
 	) { }
 
 	ngOnInit() {
-		this.getAllArticles();
+		// this.getAllArticles();
+		// this.reg();
 	}
 
 	getAllArticles() {
@@ -42,5 +46,10 @@ export class HomePage implements OnInit {
 				alert(ex.toString());
 			}
 		);
+	}
+
+	reg() {
+
+		this.FcmService.resgisterPush();
 	}
 }
