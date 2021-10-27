@@ -1,12 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Platform } from '@ionic/angular';
-import {
-	ActionPerformed,
-	PushNotificationSchema,
-	PushNotifications,
-	Token,
-} from '@capacitor/push-notifications';
 import { Capacitor } from '@capacitor/core';
 import { HttpClient } from '@angular/common/http';
 import { ConstantService } from './constant.service';
@@ -15,6 +9,14 @@ import { catchError } from 'rxjs/internal/operators/catchError';
 import { throwError } from 'rxjs/internal/observable/throwError';
 import { Observable, Subject } from 'rxjs';
 import { DeviceService } from "./device.service";
+
+import { FCM } from "@capacitor-community/fcm";
+import {
+	ActionPerformed,
+	PushNotificationSchema,
+	PushNotifications,
+	Token,
+} from '@capacitor/push-notifications';
 
 let $this;
 @Injectable({
@@ -83,22 +85,21 @@ export class FcmService {
 
 		// On success, we should be able to receive notifications
 		PushNotifications.addListener('registration',
-			(token: Token) => {
+			async (token: Token) => {
 				// alert('Push registration success, token: ' + token.value);
-				console.log('Push registration success, token: ' + token.value);
+				try {
 
-				this.fcmToken = token.value;
-				this.tokenSet();
-
-				// this.getDeviceToken();
-				// $this.saveFcmToken().subscribe(
-				// 	(result) => {
-				// 		console.log('result', result);
-				// 	},
-				// 	(err) => {
-				// 		console.log('err', err);
-				// 	},
-				// );
+					console.log('Push registration success, token: ' + token.value);
+	
+					this.fcmToken = token.value;
+					let subscription = await FCM.subscribeTo({ 
+						topic: "instantNotifications" 
+					});
+					console.log('topic subscription subscribed', subscription);
+					this.tokenSet();
+				} catch(ex) {
+					throw ex;
+				}
 			}
 	  	);
 
@@ -131,17 +132,6 @@ export class FcmService {
 	}
 
 	async getDeviceToken() {
-
-		// this.deviceService.getDeviceInfo()
-		// .then((result: any) => {
-		// 	console.log('getDeviceToken result', result);
-		// 	this.deviceToken = result.device_info;
-		// 	this.deviceInfo = result.device_id;
-		// 	// this.saveFcmToken();
-		// })
-  		// .catch((error: any) => {
-		// 	console.log('deviceService error', error);
-		// });
 
 		try {
 
