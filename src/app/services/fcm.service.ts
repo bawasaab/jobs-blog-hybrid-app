@@ -147,6 +147,7 @@ export class FcmService {
 	saveFcmToken( token, deviceInfo ): Observable<any> {
 
 		let in_data = {
+			fcm_device_type: 'ANDROID',
 			fcm_token: token,
 			device_token: deviceInfo.device_id,
 			device_info: deviceInfo.device_info,
