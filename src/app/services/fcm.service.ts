@@ -17,6 +17,7 @@ import {
 	PushNotifications,
 	Token,
 } from '@capacitor/push-notifications';
+import { ToasterService } from '../custom/services/toaster.service';
 
 let $this;
 @Injectable({
@@ -35,7 +36,8 @@ export class FcmService {
 		private platform: Platform,
 		private httpClient: HttpClient,
 		private constantService: ConstantService,
-		private deviceService: DeviceService
+		private deviceService: DeviceService,
+		protected toasterService: ToasterService,
 	) {
 		$this = this;
 		this.fcmToken$.asObservable();
@@ -123,6 +125,7 @@ export class FcmService {
 		PushNotifications.addListener('pushNotificationActionPerformed',
 			(notification: ActionPerformed) => {
 				console.log('Push action performed: ' + JSON.stringify(notification));
+				this.toasterService.presentToast(notification.notification.body);
 			}
 		);
 
