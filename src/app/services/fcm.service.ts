@@ -9,6 +9,7 @@ import { catchError } from 'rxjs/internal/operators/catchError';
 import { throwError } from 'rxjs/internal/observable/throwError';
 import { Observable, Subject } from 'rxjs';
 import { DeviceService } from "./device.service";
+import { AlertController } from '@ionic/angular';
 
 import { FCM } from "@capacitor-community/fcm";
 import {
@@ -38,6 +39,7 @@ export class FcmService {
 		private constantService: ConstantService,
 		private deviceService: DeviceService,
 		protected toasterService: ToasterService,
+		public alertController: AlertController
 	) {
 		$this = this;
 		this.fcmToken$.asObservable();
@@ -121,6 +123,7 @@ export class FcmService {
 			(notification: PushNotificationSchema) => {
 				// alert('Push received: ' + JSON.stringify(notification));
 				console.log('Push received: ' + JSON.stringify(notification));
+				this.presentAlertConfirm( notification );
 			}
 		);
 
@@ -128,7 +131,6 @@ export class FcmService {
 		PushNotifications.addListener('pushNotificationActionPerformed',
 			(notification: ActionPerformed) => {
 				console.log('Push action performed: ' + JSON.stringify(notification));
-				this.toasterService.presentToast(notification.notification.body);
 			}
 		);
 
@@ -167,4 +169,45 @@ export class FcmService {
 			catchError((e: Response) => throwError(e))
 		);
 	}
+
+	async presentAlert( notification: PushNotificationSchema ) {
+		const alert = await this.alertController.create({
+		  cssClass: 'my-custom-class',
+		  header: 'New Job Alert',
+		  subHeader: notification.title,
+		  message: notification.body,
+		  buttons: ['OK']
+		});
+	
+		await alert.present();
+	
+		const { role } = await alert.onDidDismiss();
+		console.log('onDidDismiss resolved with role', role);
+	}
+
+	async presentAlertConfirm( notification: PushNotificationSchema ) {
+		const alert = await this.alertController.create({
+		  cssClass: 'my-custom-class',
+		  header: 'New Job Alert',
+		  subHeader: notification.title,
+		  message: notification.body,
+		  buttons: [
+			{
+			  text: 'Dismiss',
+			  role: 'cancel',
+			  cssClass: 'secondary',
+			  handler: (blah) => {
+				console.log('Confirm Cancel: blah');
+			  }
+			}, {
+			  text: 'Show',
+			  handler: () => {
+				console.log('Confirm Okay');
+			  }
+			}
+		  ]
+		});
+	
+		await alert.present();
+	}	
 }
