@@ -65,6 +65,11 @@ export class AppComponent implements OnInit  {
 			url: '/faqs',
 			icon: 'chatbubbles'
 		},
+		{
+			title: 'Settings',
+			url: '/settings',
+			icon: 'settings'
+		},
 	];
 
 	constructor(
@@ -76,24 +81,7 @@ export class AppComponent implements OnInit  {
 
 		this.platform.ready()
 		.then( () => {
-
-			// Trigger the push setup
-			this.fcmService.initPush();
-
-			this.fcmService.fcmToken$.subscribe( async (token: any) => {
-
-				let deviceInfo = await this.fcmService.getDeviceToken();
-
-				this.fcmService.saveFcmToken( token, deviceInfo ).subscribe(
-					(result) => {
-						console.log('result', result);
-					},
-					(err) => {
-						console.log('err', err);
-					},
-				);
-
-			} );
+			
 		} )
 		.catch( (ex) => {
 			console.log('app component platform ready error', ex);

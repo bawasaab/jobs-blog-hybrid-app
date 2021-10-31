@@ -47,11 +47,14 @@ export class FcmService {
 
 		if( Capacitor.platform !== 'web' ) {
 			this.resgisterPush();
+		} else {
+			console.log('Capacitor.platform is web so no push init', Capacitor.platform);
 		}
 	}
 
 	tokenSet() {
 
+		console.log('inside tokenSet');
 		this.fcmToken$.next( this.fcmToken );
 	}
 	
@@ -68,17 +71,17 @@ export class FcmService {
 				console.log('Permission Received', permission.receive);
 				PushNotifications.register()
 				.then( (result) => {
-					// console.log( 'PushNotifications.register result', result );
+					console.log( 'PushNotifications.register result', result );
 				} )
 				.catch( (ex) => {
-					// console.log( 'PushNotifications.register exception', ex );
+					console.log( 'PushNotifications.register exception', ex );
 				} );
 			} else {
 				console.log('No permission granted for push notifications');
 			}
 		} )
 		.catch( (ex) => {
-			console.log('fcm resgisterPush', ex);
+			console.log('fcm resgisterPush exception', ex);
 		} );
 
 		/**
