@@ -129,8 +129,11 @@ export class FcmService {
 
 		// Method called when tapping on a notification
 		PushNotifications.addListener('pushNotificationActionPerformed',
-			(notification: ActionPerformed) => {
+			// (notification: ActionPerformed) => {
+			(notification: any) => {
 				console.log('Push action performed: ' + JSON.stringify(notification));
+				// this.router.navigate([`article-details/${notification.notification.data.article_slug}`]);
+				this.presentAlertConfirm2( notification );
 			}
 		);
 
@@ -170,21 +173,6 @@ export class FcmService {
 		);
 	}
 
-	async presentAlert( notification: PushNotificationSchema ) {
-		const alert = await this.alertController.create({
-		  cssClass: 'my-custom-class',
-		  header: 'New Job Alert',
-		  subHeader: notification.title,
-		  message: notification.body,
-		  buttons: ['OK']
-		});
-	
-		await alert.present();
-	
-		const { role } = await alert.onDidDismiss();
-		console.log('onDidDismiss resolved with role', role);
-	}
-
 	async presentAlertConfirm( notification: PushNotificationSchema ) {
 		const alert = await this.alertController.create({
 		  cssClass: 'my-custom-class',
@@ -203,11 +191,40 @@ export class FcmService {
 			  text: 'Show',
 			  handler: () => {
 				console.log('Confirm Okay');
+				this.router.navigate([`article-details/${notification.data.article_slug}`]);
 			  }
 			}
 		  ]
 		});
 	
 		await alert.present();
-	}	
+	}
+
+	async presentAlertConfirm2( notification: any ) {
+		const alert = await this.alertController.create({
+		  cssClass: 'my-custom-class',
+		  header: 'New Job Alert',
+		  subHeader: notification.title,
+		  message: notification.body,
+		  buttons: [
+			{
+			  text: 'Dismiss',
+			  role: 'cancel',
+			  cssClass: 'secondary',
+			  handler: (blah) => {
+				console.log('Confirm Cancel: blah');
+			  }
+			}, {
+			  text: 'Show',
+			  handler: () => {
+				console.log('Confirm Okay');
+				// this.router.navigate([`article-details/${notification.data.article_slug}`]);
+				this.router.navigate([`article-details/${notification.notification.data.article_slug}`]);
+			  }
+			}
+		  ]
+		});
+	
+		await alert.present();
+	}
 }
