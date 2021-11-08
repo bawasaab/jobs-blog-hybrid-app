@@ -1,0 +1,52 @@
+<!-- OK starts -->
+<ion-header [translucent]="true">
+  <ion-toolbar color="dark">
+      <ion-buttons slot="start">
+        <ion-back-button></ion-back-button>
+      </ion-buttons>
+      <ion-title>{{ title }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+<!-- OK ends -->
+
+<ion-content [fullscreen]="true">
+<ion-header collapse="condense">
+  <ion-toolbar color="dark">
+    <ion-title size="large">
+              <h1>
+                  {{ title }}
+              </h1>
+          </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<div id="container" *ngIf="isArticlesFound; else noDataFound" @slideLeft>
+  <h1 class="capitalize text-center">{{ searchResults }}</h1>
+
+  <ion-card *ngFor="let article of articles; trackBy:identify">
+    <ion-item color="dark">
+      <!-- <ion-icon name="pin" slot="start"></ion-icon> -->
+      <ion-label class="text-center">
+        {{ article?.title }}
+      </ion-label>
+    </ion-item>
+
+    <ion-card-content class="text-justify">
+      {{ article?.short_description }}
+    </ion-card-content>
+
+    <ion-footer>
+      <ion-card-content class="text-center">
+        <ion-button color="dark" shape="round" (click)="goToDescription(article?.slug)">View</ion-button>
+      </ion-card-content>
+    </ion-footer>
+  </ion-card>
+</div>
+
+<ng-template #noDataFound>
+  <div id="container">
+    <p *ngIf="!completed">Loading...</p>
+    <p *ngIf="completed">No Data Found.</p>
+  </div>
+</ng-template>
+</ion-content>

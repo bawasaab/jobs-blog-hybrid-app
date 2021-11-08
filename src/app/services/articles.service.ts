@@ -17,8 +17,6 @@ export class ArticlesService {
 	getAllArticles() {
 
         let url = `${this.constantService.apiBaseUrl}/articles`;
-        // search != undefined ? (url = `${url}?searchTxt=${search}`) : '';
-        console.log('url', url);
         return this.httpClient
             .get(url)
             .pipe(
@@ -30,8 +28,6 @@ export class ArticlesService {
     getAllLatestJobs() {
 
         let url = `${this.constantService.apiBaseUrl}/latest-jobs`;
-        // search != undefined ? (url = `${url}?searchTxt=${search}`) : '';
-        console.log('url', url);
         return this.httpClient
             .get(url)
             .pipe(
@@ -43,8 +39,6 @@ export class ArticlesService {
     getAllUpcomingJobs() {
 
         let url = `${this.constantService.apiBaseUrl}/upcoming-jobs`;
-        // search != undefined ? (url = `${url}?searchTxt=${search}`) : '';
-        console.log('url', url);
         return this.httpClient
             .get(url)
             .pipe(
@@ -56,8 +50,6 @@ export class ArticlesService {
     getAllJobsClosingSoon() {
 
         let url = `${this.constantService.apiBaseUrl}/jobs-closing-soon`;
-        // search != undefined ? (url = `${url}?searchTxt=${search}`) : '';
-        console.log('url', url);
         return this.httpClient
             .get(url)
             .pipe(
@@ -69,8 +61,6 @@ export class ArticlesService {
     getArticleById( id ) {
 
         let url = `${this.constantService.apiBaseUrl}/articles/${id}`;
-        // search != undefined ? (url = `${url}?searchTxt=${search}`) : '';
-        console.log('url', url);
         return this.httpClient
             .get(url)
             .pipe(
@@ -82,8 +72,17 @@ export class ArticlesService {
     getArticleBySlug( slug ) {
 
         let url = `${this.constantService.apiBaseUrl}/articles/BySlug/${slug}`;
-        // search != undefined ? (url = `${url}?searchTxt=${search}`) : '';
-        console.log('url', url);
+        return this.httpClient
+            .get(url)
+            .pipe(
+                map((e: any) => e),
+                catchError((e: Response) => throwError(e))
+            );
+    }
+
+    searchArticle( str ) {
+
+        let url = `${this.constantService.apiBaseUrl}/articles/search/${str}`;
         return this.httpClient
             .get(url)
             .pipe(

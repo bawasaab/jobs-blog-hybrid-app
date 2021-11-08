@@ -54,6 +54,14 @@ const routes: Routes = [
   {
     path: 'article-details/:articleId',
     loadChildren: () => import('./pages/article-details/article-details.module').then( m => m.ArticleDetailsPageModule)
+  },
+  {
+    path: 'settings',
+    loadChildren: () => import('./pages/settings/settings.module').then( m => m.SettingsPageModule)
+  },
+  {
+    path: 'search-jobs/:title/:str',
+    loadChildren: () => import('./pages/search-jobs/search-jobs.module').then( m => m.SearchJobsPageModule)
   }
 
 ];

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { slideLeft } from 'src/app/custom/animations/slideLeft';
 import { ArticlesService } from "../../services/articles.service";
 
@@ -20,32 +21,33 @@ export class HomePage implements OnInit {
 
 	constructor(
 		protected articlesService: ArticlesService,
-		protected FcmService: FcmService
+		protected FcmService: FcmService,
+		protected router: Router,
 	) { }
 
-	ngOnInit() {
-		// this.getAllArticles();
-		// this.reg();
-	}
+	ngOnInit() {}
 
-	getAllArticles() {
+	searchArticle( str ) {
 
-		this.articlesService.getAllArticles().subscribe(
-			async (result) => {
-				// console.log('result', result);
-				if( result.success ) {
-					this.articles = result?.data?.article;
-					console.log('this.articles', this.articles);
-				} else {
-					alert(result.msg.toString());
-				}
-			},
-			async (ex) => {
-				console.log('ex', ex);
-				this.ex = ex;
-				alert(ex.toString());
-			}
-		);
+		// search-jobs
+		this.router.navigate([`search-jobs/${this.selectedTab}/${str}`]);
+
+		// this.articlesService.searchArticle( str ).subscribe(
+		// 	async (result) => {
+		// 		// console.log('result', result);
+		// 		if( result.success ) {
+		// 			this.articles = result?.data?.article;
+		// 			console.log('this.articles', this.articles);
+		// 		} else {
+		// 			alert(result.msg.toString());
+		// 		}
+		// 	},
+		// 	async (ex) => {
+		// 		console.log('ex', ex);
+		// 		this.ex = ex;
+		// 		alert(ex.toString());
+		// 	}
+		// );
 	}
 
 	reg() {

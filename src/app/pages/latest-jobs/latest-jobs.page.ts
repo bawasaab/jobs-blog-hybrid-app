@@ -40,10 +40,6 @@ export class LatestJobsPage implements OnInit {
 		this.articlesService.getAllLatestJobs().subscribe(
 			async (result) => {
 				this.articles = result?.data?.article;
-				
-				for (let index = 0; index < 11; index++) {
-					this.articles.push(this.articles[0]);					
-				}
 				this.isArticlesFound = true;
 			},
 			async (ex) => {
