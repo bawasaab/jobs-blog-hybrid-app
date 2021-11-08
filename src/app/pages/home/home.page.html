@@ -7,16 +7,12 @@
     </ion-toolbar>
   </ion-header>
   
-  <ion-content [fullscreen]="true" @slideLeft>
+  <ion-content [fullscreen]="true">
     <ion-header collapse="condense">
       <ion-toolbar color="dark">
-        <ion-title size="large">{{ title }} hello</ion-title>
+        <ion-title size="large">{{ title }}</ion-title>
       </ion-toolbar>
     </ion-header>
-  
-    <div id="container">
-      <strong class="capitalize">{{ title }}</strong>
-      <p>Explore <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
 
       <ion-segment (ionChange)="segmentChanged($event)" color="primary" value="categories" class="margin-bottom-10">
         <ion-segment-button value="categories">

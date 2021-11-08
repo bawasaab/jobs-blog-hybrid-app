@@ -1,0 +1,31 @@
+<ion-header [translucent]="true">
+	<ion-toolbar color="dark">
+		<ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+		<ion-title>{{ title }}</ion-title>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" @slideLeft>
+	<ion-header collapse="condense">
+		<ion-toolbar color="dark">
+			<ion-title size="large">{{ title }}</ion-title>
+		</ion-toolbar>
+	</ion-header>
+
+	<div id="container">
+		<!-- <ion-button shape="round" expand="block">Round Button</ion-button> -->
+	</div>
+
+	<ion-list>
+		<ion-item>
+			<ion-label>Subscribe to instant job notifications</ion-label>
+			<ion-toggle 
+				slot="end"
+				(ionChange)="fcmNotifications($event)"
+				[(ngModel)]="instantNotifications">
+			</ion-toggle>
+		</ion-item>
+	</ion-list>
+</ion-content>
