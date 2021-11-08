@@ -9,6 +9,7 @@ import { catchError } from 'rxjs/internal/operators/catchError';
 import { throwError } from 'rxjs/internal/observable/throwError';
 import { Observable, Subject } from 'rxjs';
 import { DeviceService } from "./device.service";
+import { AlertController } from '@ionic/angular';
 
 import { FCM } from "@capacitor-community/fcm";
 import {
@@ -38,6 +39,7 @@ export class FcmService {
 		private constantService: ConstantService,
 		private deviceService: DeviceService,
 		protected toasterService: ToasterService,
+		public alertController: AlertController
 	) {
 		$this = this;
 		this.fcmToken$.asObservable();
@@ -47,11 +49,14 @@ export class FcmService {
 
 		if( Capacitor.platform !== 'web' ) {
 			this.resgisterPush();
+		} else {
+			console.log('Capacitor.platform is web so no push init', Capacitor.platform);
 		}
 	}
 
 	tokenSet() {
 
+		console.log('inside tokenSet');
 		this.fcmToken$.next( this.fcmToken );
 	}
 	
@@ -68,17 +73,17 @@ export class FcmService {
 				console.log('Permission Received', permission.receive);
 				PushNotifications.register()
 				.then( (result) => {
-					// console.log( 'PushNotifications.register result', result );
+					console.log( 'PushNotifications.register result', result );
 				} )
 				.catch( (ex) => {
-					// console.log( 'PushNotifications.register exception', ex );
+					console.log( 'PushNotifications.register exception', ex );
 				} );
 			} else {
 				console.log('No permission granted for push notifications');
 			}
 		} )
 		.catch( (ex) => {
-			console.log('fcm resgisterPush', ex);
+			console.log('fcm resgisterPush exception', ex);
 		} );
 
 		/**
@@ -118,14 +123,17 @@ export class FcmService {
 			(notification: PushNotificationSchema) => {
 				// alert('Push received: ' + JSON.stringify(notification));
 				console.log('Push received: ' + JSON.stringify(notification));
+				this.presentAlertConfirm( notification );
 			}
 		);
 
 		// Method called when tapping on a notification
 		PushNotifications.addListener('pushNotificationActionPerformed',
-			(notification: ActionPerformed) => {
+			// (notification: ActionPerformed) => {
+			(notification: any) => {
 				console.log('Push action performed: ' + JSON.stringify(notification));
-				this.toasterService.presentToast(notification.notification.body);
+				// this.router.navigate([`article-details/${notification.notification.data.article_slug}`]);
+				this.presentAlertConfirm2( notification );
 			}
 		);
 
@@ -163,5 +171,60 @@ export class FcmService {
 			map((e: any) => e),
 			catchError((e: Response) => throwError(e))
 		);
+	}
+
+	async presentAlertConfirm( notification: PushNotificationSchema ) {
+		const alert = await this.alertController.create({
+		  cssClass: 'my-custom-class',
+		  header: 'New Job Alert',
+		  subHeader: notification.title,
+		  message: notification.body,
+		  buttons: [
+			{
+			  text: 'Dismiss',
+			  role: 'cancel',
+			  cssClass: 'secondary',
+			  handler: (blah) => {
+				console.log('Confirm Cancel: blah');
+			  }
+			}, {
+			  text: 'Show',
+			  handler: () => {
+				console.log('Confirm Okay');
+				this.router.navigate([`article-details/${notification.data.article_slug}`]);
+			  }
+			}
+		  ]
+		});
+	
+		await alert.present();
+	}
+
+	async presentAlertConfirm2( notification: any ) {
+		const alert = await this.alertController.create({
+		  cssClass: 'my-custom-class',
+		  header: 'New Job Alert',
+		  subHeader: notification.title,
+		  message: notification.body,
+		  buttons: [
+			{
+			  text: 'Dismiss',
+			  role: 'cancel',
+			  cssClass: 'secondary',
+			  handler: (blah) => {
+				console.log('Confirm Cancel: blah');
+			  }
+			}, {
+			  text: 'Show',
+			  handler: () => {
+				console.log('Confirm Okay');
+				// this.router.navigate([`article-details/${notification.data.article_slug}`]);
+				this.router.navigate([`article-details/${notification.notification.data.article_slug}`]);
+			  }
+			}
+		  ]
+		});
+	
+		await alert.present();
 	}
 }
