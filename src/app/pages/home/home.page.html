@@ -15,46 +15,64 @@
     </ion-header>
 
       <ion-segment (ionChange)="segmentChanged($event)" swipe-gesture="true" color="primary" [value]="selectedTab" class="margin-bottom-10">
-        <ion-segment-button value="home">
-          <ion-label>
-            <!-- <small>Categories</small> -->
-            <ion-icon name="home"></ion-icon>
-          </ion-label>
-        </ion-segment-button>
+        
+		<ion-segment-button value="search">
+			<ion-label>
+			  <ion-icon name="search"></ion-icon>
+			</ion-label>
+		</ion-segment-button>
+		
         <ion-segment-button value="categories">
           <ion-label>
-            <!-- <small>Categories</small> -->
             <ion-icon name="list"></ion-icon>
           </ion-label>
         </ion-segment-button>
-        <ion-segment-button value="qualifications">
+        
+		<ion-segment-button value="qualifications">
           <ion-label>
-            <!-- <small>Qualifications</small> -->
             <ion-icon name="book"></ion-icon>
           </ion-label>
         </ion-segment-button>
-        <ion-segment-button value="states">
+        
+		<ion-segment-button value="states">
           <ion-label>
-            <!-- <small>States</small> -->
             <ion-icon name="compass"></ion-icon>
           </ion-label>
         </ion-segment-button>
-        <ion-segment-button value="search">
-          <ion-label>
-            <!-- <small>Search</small> -->
-            <ion-icon name="search"></ion-icon>
-          </ion-label>
-        </ion-segment-button>
+
+		<ion-segment-button value="home">
+			<ion-label>
+			  <ion-icon name="home"></ion-icon>
+			</ion-label>
+		</ion-segment-button>
+        
       </ion-segment>
 
-	  <ng-container *ngIf="selectedTab == 'home'">
-        <h1 @slideLeft>Sitemap</h1>
-        <ion-button @slideLeft *ngFor="let obj of homeLinks; let i = index" expand="block" shape="round" class="margin-bottom-10" (click)="goTo(obj.link)">
-        <b>{{ obj.name }}</b>
-        </ion-button>
+	  <ng-container *ngIf="selectedTab == 'search'">
+        <h1 @slideLeft>Search Jobs</h1>
+        <ion-searchbar @slideLeft debounce="500" animated placeholder="search Jobs" color="light" (change)="searchJobs($event);"></ion-searchbar>
+
+		<ion-card @slideLeft *ngFor="let article of articles; trackBy:identify">
+			<ion-item color="dark">
+				<!-- <ion-icon name="pin" slot="start"></ion-icon> -->
+				<ion-label class="text-center">
+					{{ article?.title }}
+				</ion-label>
+			</ion-item>
+
+			<ion-card-content class="text-justify">
+				{{ article?.short_description }}
+			</ion-card-content>
+
+			<ion-footer>
+				<ion-card-content class="text-center">
+					<ion-button color="dark" shape="round" (click)="goToDescription(article?.slug)">View</ion-button>
+				</ion-card-content>
+			</ion-footer>
+		</ion-card>
       </ng-container>
 
-      <ng-container *ngIf="selectedTab == 'categories'">
+	  <ng-container *ngIf="selectedTab == 'categories'">
         <h1 @slideLeft>Jobs By Categories</h1>
         <ion-button @slideLeft *ngFor="let category of categories; let i = index" expand="block" shape="round" class="margin-bottom-10" (click)="searchArticle(category)">
         <b>{{ category }}</b>
@@ -74,9 +92,11 @@
           <b>{{ state }} Jobs</b>
         </ion-button>
       </ng-container>
-
-      <ng-container *ngIf="selectedTab == 'search'">
-        <h1 @slideLeft>Search Jobs</h1>
-        <ion-searchbar @slideLeft debounce="500" animated placeholder="search Jobs" color="light"></ion-searchbar>
+      
+	  <ng-container *ngIf="selectedTab == 'home'">
+        <h1 @slideLeft>Sitemap</h1>
+        <ion-button @slideLeft *ngFor="let obj of homeLinks; let i = index" expand="block" shape="round" class="margin-bottom-10" (click)="goTo(obj.link)">
+        <b>{{ obj.name }}</b>
+        </ion-button>
       </ng-container>
 </ion-content>  

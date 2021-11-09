@@ -53,6 +53,7 @@ export class ContactUsPage implements OnInit {
             async (ex) => {
                 console.log('ex', ex);
                 this.toasterService.presentToast(ex.message);
+                await this.loaderService.close();
             },
             async () => {
                 await this.loaderService.close();

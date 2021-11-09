@@ -58,6 +58,7 @@ export class SearchJobsPage implements OnInit {
 		async (ex) => {
 			console.log('ex', ex);
 			this.toasterService.presentToast(ex.message);
+			await this.loaderService.close();
 		},
 		async () => {
 			this.completed = true;

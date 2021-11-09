@@ -6,8 +6,20 @@ h1 {
     text-align: center;
 }
   
-  #container {
+#container {
     text-align: center;
+}
+
+.text-center {
+	text-align: center;
+}
+
+.text-justify {
+	text-align: justify;
+}
+
+.pull-right {
+	align-self: right;
 }
 
 // ion-menu-button {

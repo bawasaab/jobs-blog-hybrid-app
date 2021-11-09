@@ -9,6 +9,8 @@ import { FcmService } from './services/fcm.service';
 })
 export class AppComponent implements OnInit  {
 
+
+	isConnected = true;
 	public appPages = [
 		{
 			title: 'Home',

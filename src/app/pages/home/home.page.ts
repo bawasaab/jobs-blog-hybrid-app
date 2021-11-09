@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { slideLeft } from 'src/app/custom/animations/slideLeft';
+import { LoaderService } from 'src/app/custom/services/loader.service';
+import { ToasterService } from 'src/app/custom/services/toaster.service';
 import { ArticlesService } from "../../services/articles.service";
 
 import { FcmService } from "../../services/fcm.service";
+import { NetworkConnectedService } from "../../services/network-connected.service";
 
 @Component({
 	selector: 'app-home',
@@ -18,7 +21,9 @@ export class HomePage implements OnInit {
 	title = 'Home';
 	articles;
 	ex;
-	selectedTab = 'home';
+	selectedTab = 'search';
+	isArticlesFound: boolean;
+	completed: boolean;
 
 	homeLinks = [
 		{
@@ -173,36 +178,53 @@ export class HomePage implements OnInit {
 		'Uttar Pradesh',
 		'West Bengal'  
 	];
-
+	isConnected: boolean = true;
+	
 	constructor(
 		protected articlesService: ArticlesService,
 		protected FcmService: FcmService,
 		protected router: Router,
+		protected activatedRoute: ActivatedRoute, 
+        protected toasterService: ToasterService,
+        protected loaderService: LoaderService,
+		private networkConnectedService: NetworkConnectedService
 	) { }
 
-	ngOnInit() {}
+	ngOnInit() {
+		this.getAllArticles();
+
+		this.networkConnectedService.isConnected$.subscribe( ( status: boolean ) => {
+			this.isConnected = status;
+		} );
+	}
 
 	searchArticle( str ) {
 
 		// search-jobs
 		this.router.navigate([`search-jobs/${this.selectedTab}/${str}`]);
+	}
 
-		// this.articlesService.searchArticle( str ).subscribe(
-		// 	async (result) => {
-		// 		// console.log('result', result);
-		// 		if( result.success ) {
-		// 			this.articles = result?.data?.article;
-		// 			console.log('this.articles', this.articles);
-		// 		} else {
-		// 			alert(result.msg.toString());
-		// 		}
-		// 	},
-		// 	async (ex) => {
-		// 		console.log('ex', ex);
-		// 		this.ex = ex;
-		// 		alert(ex.toString());
-		// 	}
-		// );
+	async searchJobs( event ) {
+
+		let str = event.target.value;
+		await this.loaderService.open();
+		this.articlesService.searchArticle(str).subscribe(
+			async (result) => {
+				this.articles = result?.data?.article;
+				this.isArticlesFound = true;
+			},
+			async (ex) => {
+				console.log('ex', ex);
+                this.toasterService.presentToast(ex.message);
+				await this.loaderService.close();
+			},
+			async () => {
+                this.completed = true;
+				if( this.isArticlesFound ) {
+                    await this.loaderService.close();
+				}
+			}
+		);
 	}
 
 	reg() {
@@ -216,5 +238,36 @@ export class HomePage implements OnInit {
 
 	goTo( link: string ) {
 		this.router.navigate([`${link}`]);
+	}
+
+	async getAllArticles() {
+
+		await this.loaderService.open();
+		this.articlesService.getAllLatestJobs().subscribe(
+			async (result) => {
+				this.articles = result?.data?.article;
+				this.isArticlesFound = true;
+			},
+			async (ex) => {
+				console.log('ex', ex);
+                this.toasterService.presentToast(ex.message);
+				await this.loaderService.close();
+			},
+			async () => {
+                this.completed = true;
+				if( this.isArticlesFound ) {
+                    await this.loaderService.close();
+				}
+			}
+		);
+	}
+
+	identify( index, item ) {
+		return item._id;
+	}
+
+	goToDescription(slug) {
+		console.log('articleId', slug);
+		this.router.navigate([`article-details/${slug}`]);
 	}
 }
