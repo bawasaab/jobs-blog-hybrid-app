@@ -18,7 +18,54 @@ export class HomePage implements OnInit {
 	title = 'Home';
 	articles;
 	ex;
-	selectedTab = 'categories';
+	selectedTab = 'home';
+
+	homeLinks = [
+		{
+			name: 'Latest Jobs',
+			link: 'latest-jobs'
+		},
+		{
+			name: 'Jobs Closing Soon',
+			link: 'jobs-closing-soon'
+		},
+		{
+			name: 'Upcoming Jobs',
+			link: 'upcoming-jobs'
+		},
+		{
+			name: 'About us',
+			link: 'about-us'
+		},
+		{
+			name: 'Contact Us',
+			link: 'contact-us'
+		},
+		{
+			name: 'Disclaimer',
+			link: 'disclaimer'
+		},
+		{
+			name: 'Privacy Policy',
+			link: 'privacy-policy'
+		},
+		{
+			name: 'Govt Job Importance',
+			link: 'importance-of-government-jobs-in-india'
+		},
+		{
+			name: 'How to choose Govt Job',
+			link: 'how-to-choose-the-right-government-job-for-you-in-india'
+		},
+		{
+			name: 'FAQ',
+			link: 'faqs'
+		},
+		{
+			name: 'Settings',
+			link: 'settings'
+		},
+	];
 
 	categories = [
 		'Police Jobs',
@@ -165,5 +212,9 @@ export class HomePage implements OnInit {
 
 	segmentChanged(ev: any) {
 		this.selectedTab = ev.detail.value;
+	}
+
+	goTo( link: string ) {
+		this.router.navigate([`${link}`]);
 	}
 }
