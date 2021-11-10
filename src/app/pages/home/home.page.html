@@ -14,7 +14,7 @@
       </ion-toolbar>
     </ion-header>
 
-      <ion-segment (ionChange)="segmentChanged($event)" swipe-gesture="true" color="primary" [value]="selectedTab" class="margin-bottom-10">
+      <ion-segment (ionChange)="segmentChanged($event)" color="primary" [value]="selectedTab" class="margin-bottom-10">
         
 		<ion-segment-button value="search">
 			<ion-label>
@@ -49,8 +49,21 @@
       </ion-segment>
 
 	  <ng-container *ngIf="selectedTab == 'search'">
-        <h1 @slideLeft>Search Jobs</h1>
+        <h1 @slideLeft>Latest Notifications</h1>
         <ion-searchbar @slideLeft debounce="500" animated placeholder="search Jobs" color="light" (change)="searchJobs($event);"></ion-searchbar>
+
+		<ion-list @slideLeft>
+		  
+			<ion-item>
+				<ion-label>OrderBy</ion-label>
+				<ion-select class="custom-options" (ionChange)="orderBy($event);">
+				  <ion-select-option value="publish">Publish Date</ion-select-option>
+				  <ion-select-option value="closing">Closing Date</ion-select-option>
+				  <ion-select-option value="upcomming">Upcomming Jobs</ion-select-option>
+				</ion-select>
+			  </ion-item>
+		  
+		  </ion-list>
 
 		<ion-card @slideLeft *ngFor="let article of articles; trackBy:identify">
 			<ion-item color="dark">

@@ -191,7 +191,7 @@ export class HomePage implements OnInit {
 	) { }
 
 	ngOnInit() {
-		this.getAllArticles();
+		this.getAllLatestJobs();
 
 		this.networkConnectedService.isConnected$.subscribe( ( status: boolean ) => {
 			this.isConnected = status;
@@ -204,8 +204,32 @@ export class HomePage implements OnInit {
 		this.router.navigate([`search-jobs/${this.selectedTab}/${str}`]);
 	}
 
+	orderBy( event ) {
+
+		let orderByDate = event.target.value;
+		console.log('orderByDate', orderByDate);
+		if( orderByDate == 'publish' ) {
+			this.getAllLatestJobs();
+
+		} else if( orderByDate == 'closing' ) {
+			this.getAllJobsClosingSoon();
+			
+		} else if( orderByDate == 'upcomming' ) {
+			this.getAllUpcomingJobs();
+			
+		} else {
+			this.getAllLatestJobs();
+		}
+	}
+
+	swipeEvent( event ) {
+
+		console.log('event', event);
+	}
+
 	async searchJobs( event ) {
 
+		this.articles = [];
 		let str = event.target.value;
 		await this.loaderService.open();
 		this.articlesService.searchArticle(str).subscribe(
@@ -240,8 +264,9 @@ export class HomePage implements OnInit {
 		this.router.navigate([`${link}`]);
 	}
 
-	async getAllArticles() {
+	async getAllLatestJobs() {
 
+		this.articles = [];
 		await this.loaderService.open();
 		this.articlesService.getAllLatestJobs().subscribe(
 			async (result) => {
@@ -262,6 +287,54 @@ export class HomePage implements OnInit {
 		);
 	}
 
+	async getAllJobsClosingSoon() {
+
+		this.articles = [];
+		await this.loaderService.open();
+		this.articlesService.getAllJobsClosingSoon().subscribe(
+			async (result) => {
+				this.articles = result?.data?.article;
+				this.isArticlesFound = true;
+			},
+			async (ex) => {
+				console.log('ex', ex);
+                this.toasterService.presentToast(ex.message);
+				await this.loaderService.close();
+			},
+			async () => {
+                this.completed = true;
+				if( this.isArticlesFound ) {
+                    await this.loaderService.close();
+
+				}
+			}
+		);
+	}
+
+	async getAllUpcomingJobs() {
+
+		this.articles = [];
+		await this.loaderService.open();
+		this.articlesService.getAllUpcomingJobs().subscribe(
+			async (result) => {
+				this.articles = result?.data?.article;
+				this.isArticlesFound = true;
+			},
+			async (ex) => {
+				console.log('ex', ex);
+                this.toasterService.presentToast(ex.message);
+				await this.loaderService.close();
+			},
+			async () => {
+                this.completed = true;
+				if( this.isArticlesFound ) {
+                    await this.loaderService.close();
+
+				}
+			}
+		);
+	}
+
 	identify( index, item ) {
 		return item._id;
 	}
@@ -269,5 +342,5 @@ export class HomePage implements OnInit {
 	goToDescription(slug) {
 		console.log('articleId', slug);
 		this.router.navigate([`article-details/${slug}`]);
-	}
+	}	
 }
