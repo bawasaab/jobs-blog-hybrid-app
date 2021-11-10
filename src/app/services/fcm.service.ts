@@ -4,10 +4,8 @@ import { Platform } from '@ionic/angular';
 import { Capacitor } from '@capacitor/core';
 import { HttpClient } from '@angular/common/http';
 import { ConstantService } from './constant.service';
-import { map } from 'rxjs/internal/operators/map';
-import { catchError } from 'rxjs/internal/operators/catchError';
-import { throwError } from 'rxjs/internal/observable/throwError';
-import { Observable, Subject } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
+import { throwError, Observable, Subject } from 'rxjs';
 import { DeviceService } from "./device.service";
 import { AlertController } from '@ionic/angular';
 
