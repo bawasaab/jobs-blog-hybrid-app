@@ -1,3 +1,18 @@
-<p>
-  article-card works!
-</p>
+<ion-card *ngFor="let article of articles; trackBy:identify">
+  <ion-item color="primary">
+    <!-- <ion-icon name="pin" slot="start"></ion-icon> -->
+    <ion-label class="text-center">
+      {{ article?.title }}
+    </ion-label>
+  </ion-item>
+
+  <ion-card-content class="text-justify">
+    {{ article?.short_description }}
+  </ion-card-content>
+
+  <ion-footer>
+    <ion-card-content class="text-center">
+      <ion-button color="primary" shape="round" (click)="goToDescription(article?.slug)">View</ion-button>
+    </ion-card-content>
+  </ion-footer>
+</ion-card>
