@@ -8,12 +8,15 @@ import { JobsClosingSoonPageRoutingModule } from './jobs-closing-soon-routing.mo
 
 import { JobsClosingSoonPage } from './jobs-closing-soon.page';
 
+import { SharedModule } from "../../shared/shared.module";
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    JobsClosingSoonPageRoutingModule
+    JobsClosingSoonPageRoutingModule,
+    SharedModule
   ],
   declarations: [JobsClosingSoonPage]
 })

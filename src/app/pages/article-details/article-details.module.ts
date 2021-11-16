@@ -9,8 +9,11 @@ import { ArticleDetailsPageRoutingModule } from './article-details-routing.modul
 import { ArticleDetailsPage } from './article-details.page';
 import { SafeHtmlPipe } from 'src/app/custom/pipes/safe-html.pipe';
 
+import { SharedModule } from "../../shared/shared.module";
+
 @NgModule({
   imports: [
+    SharedModule,
     CommonModule,
     FormsModule,
     IonicModule,

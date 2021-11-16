@@ -8,12 +8,15 @@ import { LatestJobsPageRoutingModule } from './latest-jobs-routing.module';
 
 import { LatestJobsPage } from './latest-jobs.page';
 
+import { SharedModule } from "../../shared/shared.module";
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    LatestJobsPageRoutingModule
+    LatestJobsPageRoutingModule,
+    SharedModule
   ],
   declarations: [LatestJobsPage]
 })
