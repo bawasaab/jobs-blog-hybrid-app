@@ -12,12 +12,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { CommonModule } from '@angular/common';
 
+import { SharedModule } from "./shared/shared.module";
+
 @NgModule({
     declarations: [
       AppComponent
     ],
   entryComponents: [],
-  imports: [CommonModule, BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule, FormsModule, BrowserAnimationsModule],
+  imports: [CommonModule, BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule, FormsModule, BrowserAnimationsModule, SharedModule],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
   schemas: [

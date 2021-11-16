@@ -7,7 +7,6 @@ import { IonicModule } from '@ionic/angular';
 import { JobsClosingSoonPageRoutingModule } from './jobs-closing-soon-routing.module';
 
 import { JobsClosingSoonPage } from './jobs-closing-soon.page';
-import { ArticleCardComponent } from 'src/app/components/article-card/article-card.component';
 
 @NgModule({
   imports: [
@@ -16,6 +15,6 @@ import { ArticleCardComponent } from 'src/app/components/article-card/article-ca
     IonicModule,
     JobsClosingSoonPageRoutingModule
   ],
-  declarations: [JobsClosingSoonPage, ArticleCardComponent]
+  declarations: [JobsClosingSoonPage]
 })
 export class JobsClosingSoonPageModule {}
