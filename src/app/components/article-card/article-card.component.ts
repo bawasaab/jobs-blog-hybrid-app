@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'article-card',
@@ -9,7 +10,9 @@ export class ArticleCardComponent implements OnInit {
 
   @Input('articles') articles  = [];
 
-  constructor() { }
+  constructor(
+    protected router: Router
+  ) { }
 
   ngOnInit() {}
 
@@ -17,4 +20,8 @@ export class ArticleCardComponent implements OnInit {
 		return item._id;
 	}
 
+  goToDescription(slug) {
+		console.log('articleId', slug);
+		this.router.navigate([`article-details/${slug}`]);
+	}	
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { slideLeft } from 'src/app/custom/animations/slideLeft';
 import { LoaderService } from 'src/app/custom/services/loader.service';
@@ -8,6 +8,8 @@ import { ArticlesService } from "../../services/articles.service";
 import { FcmService } from "../../services/fcm.service";
 import { NetworkConnectedService } from "../../services/network-connected.service";
 
+import { Subscription } from "rxjs";
+
 @Component({
 	selector: 'app-home',
 	templateUrl: './home.page.html',
@@ -16,7 +18,7 @@ import { NetworkConnectedService } from "../../services/network-connected.servic
         slideLeft
     ]
 })
-export class HomePage implements OnInit {
+export class HomePage implements OnInit, OnDestroy {
 
 	title = 'Home';
 	articles;
@@ -24,6 +26,10 @@ export class HomePage implements OnInit {
 	selectedTab = 'search';
 	isArticlesFound: boolean;
 	completed: boolean;
+
+	getAllLatestJobs$: Subscription;
+	getAllJobsClosingSoon$: Subscription;
+	getAllUpcomingJobs$: Subscription;
 
 	homeLinks = [
 		{
@@ -268,7 +274,7 @@ export class HomePage implements OnInit {
 
 		this.articles = [];
 		await this.loaderService.open();
-		this.articlesService.getAllLatestJobs().subscribe(
+		this.getAllLatestJobs$ = this.articlesService.getAllLatestJobs().subscribe(
 			async (result) => {
 				this.articles = result?.data?.article;
 				this.isArticlesFound = true;
@@ -291,7 +297,7 @@ export class HomePage implements OnInit {
 
 		this.articles = [];
 		await this.loaderService.open();
-		this.articlesService.getAllJobsClosingSoon().subscribe(
+		this.getAllJobsClosingSoon$ = this.articlesService.getAllJobsClosingSoon().subscribe(
 			async (result) => {
 				this.articles = result?.data?.article;
 				this.isArticlesFound = true;
@@ -315,7 +321,7 @@ export class HomePage implements OnInit {
 
 		this.articles = [];
 		await this.loaderService.open();
-		this.articlesService.getAllUpcomingJobs().subscribe(
+		this.getAllUpcomingJobs$ = this.articlesService.getAllUpcomingJobs().subscribe(
 			async (result) => {
 				this.articles = result?.data?.article;
 				this.isArticlesFound = true;
@@ -339,8 +345,18 @@ export class HomePage implements OnInit {
 		return item._id;
 	}
 
-	goToDescription(slug) {
-		console.log('articleId', slug);
-		this.router.navigate([`article-details/${slug}`]);
-	}	
+	ngOnDestroy() {
+	
+		if( this.getAllLatestJobs$ ) {
+            this.getAllLatestJobs$.unsubscribe();
+        }
+
+		if( this.getAllJobsClosingSoon$ ) {
+            this.getAllJobsClosingSoon$.unsubscribe();
+        }
+
+		if( this.getAllUpcomingJobs$ ) {
+            this.getAllUpcomingJobs$.unsubscribe();
+        }
+	}
 }

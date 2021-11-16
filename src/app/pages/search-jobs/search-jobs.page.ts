@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ArticlesService } from "../../services/articles.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ToasterService } from 'src/app/custom/services/toaster.service';
 import { LoaderService } from 'src/app/custom/services/loader.service';
 import { slideLeft } from 'src/app/custom/animations/slideLeft';
+
+import { Subscription } from "rxjs";
 
 @Component({
   selector: 'app-search-jobs',
@@ -13,7 +15,7 @@ import { slideLeft } from 'src/app/custom/animations/slideLeft';
 	slideLeft
   ]
 })
-export class SearchJobsPage implements OnInit {
+export class SearchJobsPage implements OnInit, OnDestroy {
 
 	title= 'Articles Listing By ';
 	page= 'Search Results: ';
@@ -25,6 +27,8 @@ export class SearchJobsPage implements OnInit {
 	str = '';
 	isArticlestrSetFlag = false;
 	isArticleIdSetFlag = false;
+
+	searchArticle$: Subscription;
 
 	constructor(
 		protected articlesService: ArticlesService,
@@ -47,35 +51,42 @@ export class SearchJobsPage implements OnInit {
 	});
   }
 
-  async searchArticle() {
+  	async searchArticle() {
 
-	await this.loaderService.open();
-	this.articlesService.searchArticle(this.str).subscribe(
-		async (result) => {
-			this.articles = result?.data?.article;
-			this.isArticlesFound = true;
-		},
-		async (ex) => {
-			console.log('ex', ex);
-			this.toasterService.presentToast(ex.message);
-			await this.loaderService.close();
-		},
-		async () => {
-			this.completed = true;
-			if( this.isArticlesFound ) {
+		await this.loaderService.open();
+		this.searchArticle$ = this.articlesService.searchArticle(this.str).subscribe(
+			async (result) => {
+				this.articles = result?.data?.article;
+				this.isArticlesFound = true;
+			},
+			async (ex) => {
+				console.log('ex', ex);
+				this.toasterService.presentToast(ex.message);
 				await this.loaderService.close();
+			},
+			async () => {
+				this.completed = true;
+				if( this.isArticlesFound ) {
+					await this.loaderService.close();
+				}
 			}
+		);
+	}
+
+	identify( index, item ) {
+		return item._id;
+	}
+
+	goToDescription(slug) {
+		console.log('articleId', slug);
+		this.router.navigate([`article-details/${slug}`]);
+	}
+
+	ngOnDestroy() {
+		
+		if( this.searchArticle ) {			
+			this.searchArticle$.unsubscribe();
 		}
-	);
-}
-
-identify( index, item ) {
-	return item._id;
-}
-
-goToDescription(slug) {
-	console.log('articleId', slug);
-	this.router.navigate([`article-details/${slug}`]);
-}
+	}
 
 }

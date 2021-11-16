@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ContactUsService } from 'src/app/services/contact-us.service';
 import { LoaderService } from 'src/app/custom/services/loader.service';
 import { ToasterService } from 'src/app/custom/services/toaster.service';
 import { slideLeft } from 'src/app/custom/animations/slideLeft';
+import { Subscription } from "rxjs";
 
 @Component({
     selector: 'app-contact-us',
@@ -12,11 +13,13 @@ import { slideLeft } from 'src/app/custom/animations/slideLeft';
         slideLeft
     ]
 })
-export class ContactUsPage implements OnInit {
+export class ContactUsPage implements OnInit, OnDestroy {
 
     title = 'Contact Us';
     todo = {};
     isSubmit = false;
+
+    contactUs$: Subscription;
 
     constructor(
         protected contactUs: ContactUsService,
@@ -43,7 +46,7 @@ export class ContactUsPage implements OnInit {
         console.log('in_data', in_data);
 
         await this.loaderService.open();
-        this.contactUs.contactUs( in_data ).subscribe(
+        this.contactUs$ = this.contactUs.contactUs( in_data ).subscribe(
             async (result) => {
                 console.log('result.msg', result.msg);
                 this.toasterService.presentToast(result.msg);
@@ -59,5 +62,12 @@ export class ContactUsPage implements OnInit {
                 await this.loaderService.close();
             },
         );
+    }
+
+    ngOnDestroy() {
+	
+        if( this.contactUs$ ) {
+            this.contactUs$.unsubscribe();
+        }
     }
 }

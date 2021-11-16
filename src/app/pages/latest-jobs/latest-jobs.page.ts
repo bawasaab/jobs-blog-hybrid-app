@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ArticlesService } from "../../services/articles.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ToasterService } from 'src/app/custom/services/toaster.service';
 import { LoaderService } from 'src/app/custom/services/loader.service';
 import { slideLeft } from 'src/app/custom/animations/slideLeft';
+
+import { Subscription } from "rxjs";
 
 @Component({
 	selector: 'app-latest-jobs',
@@ -13,7 +15,7 @@ import { slideLeft } from 'src/app/custom/animations/slideLeft';
         slideLeft
     ]
 })
-export class LatestJobsPage implements OnInit {
+export class LatestJobsPage implements OnInit, OnDestroy {
 
 	title= 'Articles Listing';
 	page= 'Latest Jobs';
@@ -21,6 +23,8 @@ export class LatestJobsPage implements OnInit {
 	isArticlesFound = false;
 	loading;
     completed = false;
+
+	getAllLatestJobs$: Subscription;
 
 	constructor(
 		protected articlesService: ArticlesService,
@@ -37,7 +41,7 @@ export class LatestJobsPage implements OnInit {
 	async getAllArticles() {
 
 		await this.loaderService.open();
-		this.articlesService.getAllLatestJobs().subscribe(
+		this.getAllLatestJobs$ = this.articlesService.getAllLatestJobs().subscribe(
 			async (result) => {
 				this.articles = result?.data?.article;
 				this.isArticlesFound = true;
@@ -60,8 +64,10 @@ export class LatestJobsPage implements OnInit {
 		return item._id;
 	}
 
-	goToDescription(slug) {
-		console.log('articleId', slug);
-		this.router.navigate([`article-details/${slug}`]);
+	ngOnDestroy() {
+	
+		if( this.getAllLatestJobs$ ) {
+            this.getAllLatestJobs$.unsubscribe();
+        }
 	}
 }

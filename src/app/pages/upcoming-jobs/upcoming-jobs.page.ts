@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { slideLeft } from 'src/app/custom/animations/slideLeft';
 import { LoaderService } from 'src/app/custom/services/loader.service';
 import { ToasterService } from 'src/app/custom/services/toaster.service';
 import { ArticlesService } from 'src/app/services/articles.service';
+
+import { Subscription } from "rxjs";
 
 @Component({
 	selector: 'app-upcoming-jobs',
@@ -22,6 +24,8 @@ export class UpcomingJobsPage implements OnInit {
 	loading;
     completed = false;
 
+	getAllUpcomingJobs$: Subscription;
+
 	constructor(
 		protected articlesService: ArticlesService,
 		protected activatedRoute: ActivatedRoute, 
@@ -37,7 +41,7 @@ export class UpcomingJobsPage implements OnInit {
 	async getAllArticles() {
 
 		await this.loaderService.open();
-		this.articlesService.getAllUpcomingJobs().subscribe(
+		this.getAllUpcomingJobs$ = this.articlesService.getAllUpcomingJobs().subscribe(
 			async (result) => {
 				this.articles = result?.data?.article;
 				this.isArticlesFound = true;
@@ -61,8 +65,11 @@ export class UpcomingJobsPage implements OnInit {
 		return item._id;
 	}
 
-	goToDescription(slug) {
-		console.log('articleId', slug);
-		this.router.navigate([`article-details/${slug}`]);
+	ngOnDestroy() {
+		
+		if(this.getAllUpcomingJobs$) {
+
+			this.getAllUpcomingJobs$.unsubscribe();
+		}
 	}
 }

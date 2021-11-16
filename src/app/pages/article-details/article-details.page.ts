@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ArticlesService } from "../../services/articles.service";
 import { ToasterService } from 'src/app/custom/services/toaster.service';
@@ -6,6 +6,7 @@ import { LoaderService } from 'src/app/custom/services/loader.service';
 import { slideLeft } from 'src/app/custom/animations/slideLeft';
 import { NgForm } from '@angular/forms';
 import { SubscribeNewsletterService } from 'src/app/services/subscribe-newsletter.service';
+import { Subscription } from "rxjs";
 
 @Component({
 	selector: 'app-article-details',
@@ -15,7 +16,7 @@ import { SubscribeNewsletterService } from 'src/app/services/subscribe-newslette
         slideLeft
     ]
 })
-export class ArticleDetailsPage implements OnInit {
+export class ArticleDetailsPage implements OnInit, OnDestroy {
 
 	articles;
 	isArticlesFound = false;
@@ -24,6 +25,9 @@ export class ArticleDetailsPage implements OnInit {
 	loading;
     completed;
     isSubmitted = false;
+
+	articleBySlug$: Subscription;
+	SubscribeNewsletter$: Subscription;
 
 	constructor(
 		protected articlesService: ArticlesService,
@@ -47,7 +51,7 @@ export class ArticleDetailsPage implements OnInit {
 
 	async getArticleById() {
 		await this.loaderService.open();
-		this.articlesService.getArticleBySlug(this.articleId).subscribe(
+		this.articleBySlug$ = this.articlesService.getArticleBySlug(this.articleId).subscribe(
 			async (result) => {
 				console.log('result', result);
 				this.articles = result?.data?.article;
@@ -99,4 +103,15 @@ export class ArticleDetailsPage implements OnInit {
             },
         );
     }
+
+	ngOnDestroy() {
+	
+		if( this.articleBySlug$ ) {
+            this.articleBySlug$.unsubscribe();
+        }
+
+		if( this.SubscribeNewsletter$ ) {
+            this.SubscribeNewsletter$.unsubscribe();
+        }
+	}
 }
