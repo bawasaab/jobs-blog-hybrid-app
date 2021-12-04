@@ -88,5 +88,4 @@ export class SearchJobsPage implements OnInit, OnDestroy {
 			this.searchArticle$.unsubscribe();
 		}
 	}
-
 }
