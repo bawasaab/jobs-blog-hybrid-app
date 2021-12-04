@@ -23,7 +23,7 @@ export class HomePage implements OnInit, OnDestroy {
 	title = 'Home';
 	articles;
 	ex;
-	selectedTab = 'search';
+	selectedTab = 'home';
 	isArticlesFound: boolean;
 	completed: boolean;
 

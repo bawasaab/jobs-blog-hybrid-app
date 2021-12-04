@@ -7,6 +7,7 @@ import { slideLeft } from 'src/app/custom/animations/slideLeft';
 import { NgForm } from '@angular/forms';
 import { SubscribeNewsletterService } from 'src/app/services/subscribe-newsletter.service';
 import { Subscription } from "rxjs";
+import { ArticleDetailsService } from 'src/app/services/article-details.service';
 
 @Component({
 	selector: 'app-article-details',
@@ -26,8 +27,8 @@ export class ArticleDetailsPage implements OnInit, OnDestroy {
     completed;
     isSubmitted = false;
 
-	articleBySlug$: Subscription;
 	SubscribeNewsletter$: Subscription;
+	subscribeArticleDetailsService$: Subscription;
 
 	constructor(
 		protected articlesService: ArticlesService,
@@ -35,40 +36,16 @@ export class ArticleDetailsPage implements OnInit, OnDestroy {
 		protected router: Router,
 		protected toasterService: ToasterService,
         protected loaderService: LoaderService,
-        protected subscribeNewsletterService: SubscribeNewsletterService
+        protected subscribeNewsletterService: SubscribeNewsletterService,
+		protected articleDetailsService: ArticleDetailsService
 	) { }
 
 	ngOnInit() {
 
-		this.activatedRoute.params.subscribe((params) => {
-			this.articleId = params.articleId;
-			console.log('this.articleId', this.articleId);
-
-			this.isArticleIdSetFlag = this.articleId ? true : false;
-			this.isArticleIdSetFlag ? this.getArticleById() : '';
-		});
-	}
-
-	async getArticleById() {
-		await this.loaderService.open();
-		this.articleBySlug$ = this.articlesService.getArticleBySlug(this.articleId).subscribe(
-			async (result) => {
-				console.log('result', result);
-				this.articles = result?.data?.article;
-				this.isArticlesFound = true;
-			},
-			async (ex) => {
-				console.log('ex', ex);
-				this.toasterService.presentToast(ex.message);
-				await this.loaderService.close();
-			},
-			async () => {
-                this.completed = true;
-				if( this.isArticlesFound ) {
-					await this.loaderService.close();
-				}
-			}
-		);
+		this.subscribeArticleDetailsService$ = this.articleDetailsService.articleDetails$.subscribe( (articleDetails: any) => {
+			this.articles = articleDetails;
+			this.isArticlesFound = true;
+		} );
 	}
 
     openExternal(url: string) {
@@ -105,13 +82,13 @@ export class ArticleDetailsPage implements OnInit, OnDestroy {
     }
 
 	ngOnDestroy() {
-	
-		if( this.articleBySlug$ ) {
-            this.articleBySlug$.unsubscribe();
-        }
 
 		if( this.SubscribeNewsletter$ ) {
             this.SubscribeNewsletter$.unsubscribe();
         }
+
+		if( this.subscribeArticleDetailsService$ ) {
+			this.subscribeArticleDetailsService$.unsubscribe();
+		}
 	}
 }

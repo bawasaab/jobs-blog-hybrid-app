@@ -16,9 +16,9 @@
 
       <ion-segment (ionChange)="segmentChanged($event)" color="primary" [value]="selectedTab" class="margin-bottom-10">
         
-		<ion-segment-button value="search">
+		<ion-segment-button value="home">
 			<ion-label>
-			  <ion-icon name="search"></ion-icon>
+			  <ion-icon name="home"></ion-icon>
 			</ion-label>
 		</ion-segment-button>
 		
@@ -40,22 +40,22 @@
           </ion-label>
         </ion-segment-button>
 
-		<ion-segment-button value="home">
+		<ion-segment-button value="menu">
 			<ion-label>
-			  <ion-icon name="home"></ion-icon>
+			  <ion-icon name="menu"></ion-icon>
 			</ion-label>
 		</ion-segment-button>
         
       </ion-segment>
 
-	  <ng-container *ngIf="selectedTab == 'search'">
+	  <ng-container *ngIf="selectedTab == 'home'">
         <h1 @slideLeft>Latest Notifications</h1>
         <ion-searchbar @slideLeft debounce="500" animated placeholder="search Jobs" color="light" (change)="searchJobs($event);"></ion-searchbar>
 
 		<ion-list @slideLeft>
 		  
 			<ion-item>
-				<ion-label>OrderBy</ion-label>
+				<ion-label>SortBy</ion-label>
 				<ion-select class="custom-options" (ionChange)="orderBy($event);">
 				  <ion-select-option value="publish">Publish Date</ion-select-option>
 				  <ion-select-option value="closing">Closing Date</ion-select-option>
@@ -90,7 +90,7 @@
         </ion-button>
       </ng-container>
       
-	  <ng-container *ngIf="selectedTab == 'home'">
+	  <ng-container *ngIf="selectedTab == 'menu'">
         <h1 @slideLeft>Sitemap</h1>
         <ion-button @slideLeft *ngFor="let obj of homeLinks; let i = index" expand="block" shape="round" class="margin-bottom-10" (click)="goTo(obj.link)">
         <b>{{ obj.name }}</b>

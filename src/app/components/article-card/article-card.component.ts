@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { slideLeft } from 'src/app/custom/animations/slideLeft';
+import { ArticleDetailsService } from 'src/app/services/article-details.service';
 
 @Component({
   selector: 'article-card',
@@ -12,10 +13,11 @@ import { slideLeft } from 'src/app/custom/animations/slideLeft';
 })
 export class ArticleCardComponent implements OnInit {
 
-  @Input('articles') articles  = [];
+  @Input('articles') articles = [];
 
   constructor(
-    protected router: Router
+    protected router: Router,
+    protected articleDetailsService: ArticleDetailsService
   ) { }
 
   ngOnInit() {}
@@ -24,8 +26,10 @@ export class ArticleCardComponent implements OnInit {
 		return item._id;
 	}
 
-  goToDescription(slug) {
+  goToDescription(slug, article) {
 		console.log('articleId', slug);
+
+    this.articleDetailsService.setArticle(article);
 		this.router.navigate([`article-details/${slug}`]);
 	}	
 }
