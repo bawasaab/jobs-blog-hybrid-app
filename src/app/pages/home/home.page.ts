@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterContentChecked, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { slideLeft } from 'src/app/custom/animations/slideLeft';
 import { LoaderService } from 'src/app/custom/services/loader.service';
@@ -9,6 +9,9 @@ import { FcmService } from "../../services/fcm.service";
 import { NetworkConnectedService } from "../../services/network-connected.service";
 
 import { Subscription } from "rxjs";
+import { ArticleDetailsService } from 'src/app/services/article-details.service';
+import { SwiperOptions } from 'swiper';
+import { SwiperComponent } from 'swiper/angular';
 
 @Component({
 	selector: 'app-home',
@@ -18,18 +21,44 @@ import { Subscription } from "rxjs";
         slideLeft
     ]
 })
-export class HomePage implements OnInit, OnDestroy {
+export class HomePage implements OnInit, AfterContentChecked {
 
-	title = 'Home';
+	/**
+	 * swiper starts here
+	 */
+
+	@ViewChild('swiper') swiper: SwiperComponent;
+	@ViewChild('ionSegment') ionSegment: SwiperComponent;	
+
+	config: SwiperOptions = {
+		slidesPerView: 'auto',
+		spaceBetween:50,
+		pagination: { clickable: false },
+		scrollbar: { draggable: true },
+		effect: 'cube'
+	};	
+	/**
+	 * swiper ends here
+	 */
+
+  	title = 'Home';
 	articles;
 	ex;
-	selectedTab = 'home';
+	selectedTab = 0;
 	isArticlesFound: boolean;
 	completed: boolean;
 
 	getAllLatestJobs$: Subscription;
 	getAllJobsClosingSoon$: Subscription;
 	getAllUpcomingJobs$: Subscription;
+
+	tabs = [
+		'home',
+		'list',
+		'book',
+		'compass',
+		'menu'
+	];
 
 	homeLinks = [
 		{
@@ -188,12 +217,13 @@ export class HomePage implements OnInit, OnDestroy {
 	
 	constructor(
 		protected articlesService: ArticlesService,
-		protected FcmService: FcmService,
 		protected router: Router,
 		protected activatedRoute: ActivatedRoute, 
         protected toasterService: ToasterService,
         protected loaderService: LoaderService,
-		private networkConnectedService: NetworkConnectedService
+		protected networkConnectedService: NetworkConnectedService,
+		protected articleDetailsService: ArticleDetailsService,
+		protected changeDetectorRef: ChangeDetectorRef
 	) { }
 
 	ngOnInit() {
@@ -202,6 +232,12 @@ export class HomePage implements OnInit, OnDestroy {
 		this.networkConnectedService.isConnected$.subscribe( ( status: boolean ) => {
 			this.isConnected = status;
 		} );
+	}
+
+	ngAfterContentChecked() {
+		if( this.swiper ) {
+			this.swiper.updateSwiper({});
+		}
 	}
 
 	searchArticle( str ) {
@@ -228,11 +264,6 @@ export class HomePage implements OnInit, OnDestroy {
 		}
 	}
 
-	swipeEvent( event ) {
-
-		console.log('event', event);
-	}
-
 	async searchJobs( event ) {
 
 		this.articles = [];
@@ -257,18 +288,15 @@ export class HomePage implements OnInit, OnDestroy {
 		);
 	}
 
-	reg() {
-
-		this.FcmService.resgisterPush();
-	}
-
-	segmentChanged(ev: any) {
-		this.selectedTab = ev.detail.value;
-	}
-
 	goTo( link: string ) {
 		this.router.navigate([`${link}`]);
 	}
+
+	goToDescription(slug, article) {
+		console.log('articleId', slug);
+		this.articleDetailsService.setArticle(article);
+		this.router.navigate([`article-details/${slug}`]);
+	}	
 
 	async getAllLatestJobs() {
 
@@ -278,6 +306,7 @@ export class HomePage implements OnInit, OnDestroy {
 			async (result) => {
 				this.articles = result?.data?.article;
 				this.isArticlesFound = true;
+				console.log('this.articles', this.articles);
 			},
 			async (ex) => {
 				console.log('ex', ex);
@@ -343,6 +372,16 @@ export class HomePage implements OnInit, OnDestroy {
 
 	identify( index, item ) {
 		return item._id;
+	}
+
+	segmentChanged(ev: any) {
+		this.selectedTab = ev.detail.value;
+		this.swiper.swiperRef.slideTo(this.selectedTab);
+	}
+
+	onSlideChange($ev: any) {
+		this.selectedTab = $ev.activeIndex;
+		this.changeDetectorRef.detectChanges();
 	}
 
 	ngOnDestroy() {

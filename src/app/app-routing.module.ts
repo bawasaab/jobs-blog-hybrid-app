@@ -63,7 +63,6 @@ const routes: Routes = [
     path: 'search-jobs/:title/:str',
     loadChildren: () => import('./pages/search-jobs/search-jobs.module').then( m => m.SearchJobsPageModule)
   }
-
 ];
 
 @NgModule({

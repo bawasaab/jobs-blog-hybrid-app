@@ -1,99 +1,104 @@
 <ion-header [translucent]="true">
-    <ion-toolbar color="primary">
-      <ion-buttons slot="start">
-        <ion-menu-button></ion-menu-button>
-      </ion-buttons>
-      <ion-title>{{ title }}</ion-title>
-    </ion-toolbar>
-  </ion-header>
-  
-  <ion-content [fullscreen]="true">
-    <ion-header collapse="condense">
-      <ion-toolbar color="primary">
-        <ion-title size="large">{{ title }}</ion-title>
-      </ion-toolbar>
-    </ion-header>
+	<ion-toolbar color="primary">
+		<ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+		<ion-title>{{ title }}</ion-title>
+	</ion-toolbar>
+</ion-header>
 
-      <ion-segment (ionChange)="segmentChanged($event)" color="primary" [value]="selectedTab" class="margin-bottom-10">
-        
-		<ion-segment-button value="home">
-			<ion-label>
-			  <ion-icon name="home"></ion-icon>
-			</ion-label>
-		</ion-segment-button>
+
+<ion-content  [fullscreen]="true">
+
+	<ion-segment 
+		#ionSegment 
+
+		scrollable
 		
-        <ion-segment-button value="categories">
-          <ion-label>
-            <ion-icon name="list"></ion-icon>
-          </ion-label>
-        </ion-segment-button>
-        
-		<ion-segment-button value="qualifications">
-          <ion-label>
-            <ion-icon name="book"></ion-icon>
-          </ion-label>
-        </ion-segment-button>
-        
-		<ion-segment-button value="states">
-          <ion-label>
-            <ion-icon name="compass"></ion-icon>
-          </ion-label>
-        </ion-segment-button>
+		color="primary" 
 
-		<ion-segment-button value="menu">
+		(ionChange)="segmentChanged($event)" 
+		[(ngModel)]="selectedTab" 
+		class="margin-bottom-10">
+
+		<ion-segment-button *ngFor="let tab of tabs; let i = index" value="{{i}}">
 			<ion-label>
-			  <ion-icon name="menu"></ion-icon>
+			  <ion-icon name="{{ tab }}"></ion-icon>
 			</ion-label>
 		</ion-segment-button>
-        
-      </ion-segment>
 
-	  <ng-container *ngIf="selectedTab == 'home'">
-        <h1 @slideLeft>Latest Notifications</h1>
-        <ion-searchbar @slideLeft debounce="500" animated placeholder="search Jobs" color="light" (change)="searchJobs($event);"></ion-searchbar>
+	</ion-segment>
 
-		<ion-list @slideLeft>
+	<swiper #swiper [config]="config" (slideChange)="onSlideChange($event)">
+		<ng-template swiperSlide *ngFor="let tab of tabs; let i = index;" [value]="tab">
+
+			<ng-container *ngIf="selectedTab == 0">
+				<h1>Latest Notifications</h1>
+				<ion-searchbar debounce="500" animated placeholder="search Jobs" color="light" (change)="searchJobs($event);"></ion-searchbar>
+		
+				<ion-list>
+				  
+					<ion-item>
+						<ion-label>SortBy</ion-label>
+						<ion-select class="custom-options" (ionChange)="orderBy($event);">
+						  <ion-select-option value="publish">Publish Date</ion-select-option>
+						  <ion-select-option value="closing">Closing Date</ion-select-option>
+						  <ion-select-option value="upcomming">Upcomming Jobs</ion-select-option>
+						</ion-select>
+					</ion-item>
+				  
+				</ion-list>
+		
+				<!-- <article-card [articles]="articles"></article-card> -->
+				<ion-card @slideLeft *ngFor="let article of articles; trackBy:identify">
+					<ion-item color="primary">
+						<!-- <ion-icon name="pin" slot="start"></ion-icon> -->
+						<ion-label class="text-center">
+						{{ article?.title }}
+						</ion-label>
+					</ion-item>
+
+					<ion-card-content class="text-justify">
+						{{ article?.short_description }}
+					</ion-card-content>
+
+					<ion-footer>
+						<ion-card-content class="text-center">
+						<ion-button color="primary" shape="round" (click)="goToDescription(article?.slug, article)">View</ion-button>
+						</ion-card-content>
+					</ion-footer>
+				</ion-card>
+			
+			</ng-container>
+
+			<ng-container *ngIf="selectedTab == 1">
+				<h1>Jobs By Categories</h1>
+				<ion-button *ngFor="let category of categories;" expand="block" shape="round" class="margin-bottom-10" (click)="searchArticle(category)">
+				<b>{{ category }}</b>
+				</ion-button>
+			</ng-container>
+
+			<ng-container *ngIf="selectedTab == 2">
+				<h1>Jobs By Qualifications</h1>
+				<ion-button *ngFor="let qualification of qualifications; let i = index" expand="block" shape="round" class="margin-bottom-10" (click)="searchArticle(qualification)">
+				  <b>{{ qualification }} Jobs</b>
+				</ion-button>
+			</ng-container>
 		  
-			<ion-item>
-				<ion-label>SortBy</ion-label>
-				<ion-select class="custom-options" (ionChange)="orderBy($event);">
-				  <ion-select-option value="publish">Publish Date</ion-select-option>
-				  <ion-select-option value="closing">Closing Date</ion-select-option>
-				  <ion-select-option value="upcomming">Upcomming Jobs</ion-select-option>
-				</ion-select>
-			  </ion-item>
-		  
-		  </ion-list>
+			<ng-container *ngIf="selectedTab == 3">
+				<h1>Jobs By States</h1>
+				<ion-button *ngFor="let state of states; let i = index" expand="block" shape="round" class="margin-bottom-10"  (click)="searchArticle(state)">
+				  <b>{{ state }} Jobs</b>
+				</ion-button>
+			</ng-container>
+			  
+			<ng-container *ngIf="selectedTab == 4">
+				<h1>Sitemap</h1>
+				<ion-button *ngFor="let obj of homeLinks; let i = index" expand="block" shape="round" class="margin-bottom-10" (click)="goTo(obj.link)">
+				<b>{{ obj.name }}</b>
+				</ion-button>
+			</ng-container>
 
-		<article-card [articles]="articles"></article-card>
-    
-    </ng-container>
-
-	  <ng-container *ngIf="selectedTab == 'categories'">
-        <h1 @slideLeft>Jobs By Categories</h1>
-        <ion-button @slideLeft *ngFor="let category of categories; let i = index" expand="block" shape="round" class="margin-bottom-10" (click)="searchArticle(category)">
-        <b>{{ category }}</b>
-        </ion-button>
-      </ng-container>
-
-      <ng-container *ngIf="selectedTab == 'qualifications'">
-        <h1 @slideLeft>Jobs By Qualifications</h1>
-        <ion-button @slideLeft *ngFor="let qualification of qualifications; let i = index" expand="block" shape="round" class="margin-bottom-10" (click)="searchArticle(qualification)">
-          <b>{{ qualification }} Jobs</b>
-        </ion-button>
-      </ng-container>
-
-      <ng-container *ngIf="selectedTab == 'states'">
-        <h1 @slideLeft>Jobs By States</h1>
-        <ion-button @slideLeft *ngFor="let state of states; let i = index" expand="block" shape="round" class="margin-bottom-10"  (click)="searchArticle(state)">
-          <b>{{ state }} Jobs</b>
-        </ion-button>
-      </ng-container>
-      
-	  <ng-container *ngIf="selectedTab == 'menu'">
-        <h1 @slideLeft>Sitemap</h1>
-        <ion-button @slideLeft *ngFor="let obj of homeLinks; let i = index" expand="block" shape="round" class="margin-bottom-10" (click)="goTo(obj.link)">
-        <b>{{ obj.name }}</b>
-        </ion-button>
-      </ng-container>
-</ion-content>  
+		</ng-template>
+	</swiper>
+</ion-content>
