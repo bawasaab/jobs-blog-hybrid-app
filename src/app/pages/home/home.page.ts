@@ -12,6 +12,7 @@ import { Subscription } from "rxjs";
 import { ArticleDetailsService } from 'src/app/services/article-details.service';
 import { SwiperOptions } from 'swiper';
 import { SwiperComponent } from 'swiper/angular';
+import { Platform } from '@ionic/angular';
 
 @Component({
 	selector: 'app-home',
@@ -28,7 +29,8 @@ export class HomePage implements OnInit, AfterContentChecked {
 	 */
 
 	@ViewChild('swiper') swiper: SwiperComponent;
-	@ViewChild('ionSegment') ionSegment: SwiperComponent;	
+	@ViewChild('ionSegment') ionSegment: SwiperComponent;
+	private _currentPlatform: String;
 
 	config: SwiperOptions = {
 		slidesPerView: 'auto',
@@ -223,15 +225,41 @@ export class HomePage implements OnInit, AfterContentChecked {
         protected loaderService: LoaderService,
 		protected networkConnectedService: NetworkConnectedService,
 		protected articleDetailsService: ArticleDetailsService,
-		protected changeDetectorRef: ChangeDetectorRef
+		protected changeDetectorRef: ChangeDetectorRef,
+		public platform: Platform,
+		protected FcmService: FcmService,
 	) { }
 
 	ngOnInit() {
-		this.getAllLatestJobs();
 
-		this.networkConnectedService.isConnected$.subscribe( ( status: boolean ) => {
-			this.isConnected = status;
-		} );
+		this.platform.ready()
+		.then( () => {
+
+			if (
+				this.platform.is('ios') ||
+				this.platform.is('android') &&
+				!(this.platform.is('desktop') || this.platform.is('mobileweb'))) {
+
+				this._currentPlatform = 'mobile';
+
+				this.reg();
+
+				this.networkConnectedService.isConnected$.subscribe( ( status: boolean ) => {
+					this.isConnected = status;
+				} );
+			} else {
+				this._currentPlatform = 'browser';
+			}
+		} )
+		.catch( ( ex ) => {
+			console.log('home plateform readdy exception', ex);
+		});
+
+		this.getAllLatestJobs();
+	}
+
+	reg() {
+		this.FcmService.resgisterPush();
 	}
 
 	ngAfterContentChecked() {

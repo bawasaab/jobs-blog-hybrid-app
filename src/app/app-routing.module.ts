@@ -62,6 +62,10 @@ const routes: Routes = [
   {
     path: 'search-jobs/:title/:str',
     loadChildren: () => import('./pages/search-jobs/search-jobs.module').then( m => m.SearchJobsPageModule)
+  },
+  {
+    path: 'downloads',
+    loadChildren: () => import('./pages/downloads/downloads.module').then( m => m.DownloadsPageModule)
   }
 ];
 
